@@ -29,10 +29,9 @@ import {
 import { fmtNum } from "@/lib/format";
 import { useStation, isOverdue, todayISO, type StationTask } from "@/lib/station-context";
 import { getLiveTrains } from "@/lib/live-trains";
-import { prettyDate, to12h, weekdayName, type BlockSession } from "@/lib/block-plan";
+import { addDays, prettyDate, to12h, weekdayName, type BlockSession } from "@/lib/block-plan";
 import {
   MapPin,
-  Clock,
   Radio,
   AlertTriangle,
   Train,
@@ -64,6 +63,25 @@ function ampm(time?: string): string {
   const suffix = h >= 12 ? "PM" : "AM";
   const display = h % 12 === 0 ? 12 : h % 12;
   return `${String(display).padStart(2, "0")}:${String(m).padStart(2, "0")} ${suffix}`;
+}
+
+function timeToMinutes(time?: string): number {
+  if (!time) return 0;
+  const [hours = 0, minutes = 0] = time.split(":").map(Number);
+  if (Number.isNaN(hours) || Number.isNaN(minutes)) return 0;
+  return hours * 60 + minutes;
+}
+
+function timeWindowStyle(startTime?: string, endTime?: string) {
+  const start = Math.max(0, Math.min(timeToMinutes(startTime), 1440));
+  let end = Math.max(0, timeToMinutes(endTime));
+  if (end <= start) end += 1440;
+  end = Math.min(end, 1440);
+
+  return {
+    left: `${(start / 1440) * 100}%`,
+    width: `${Math.max(((end - start) / 1440) * 100, 3)}%`,
+  };
 }
 
 function dayLabel(date?: string): string {
@@ -266,6 +284,102 @@ function fromBlockRequest(request: BlockRequest): WorkItem {
     };
   }
   return item;
+}
+
+function buildDemoWeeklySchedule(startDate: string): { date: string; items: WorkItem[] }[] {
+  const planned = [
+    {
+      day: 0,
+      ref: "TMS-LNL-042",
+      title: "Rail weld inspection",
+      department: "Engineering",
+      priority: "HIGH",
+      startTime: "01:20",
+      endTime: "04:20",
+      durationHours: 3,
+    },
+    {
+      day: 1,
+      ref: "TRD-LNL-118",
+      title: "OHE insulator replacement",
+      department: "TRD",
+      priority: "CRITICAL",
+      startTime: "00:40",
+      endTime: "03:10",
+      durationHours: 2.5,
+    },
+    {
+      day: 2,
+      ref: "SNT-LNL-207",
+      title: "Point machine testing",
+      department: "S&T",
+      priority: "MEDIUM",
+      startTime: "02:10",
+      endTime: "04:40",
+      durationHours: 2.5,
+    },
+    {
+      day: 3,
+      ref: "TMS-LNL-051",
+      title: "Ballast tamping · Up line",
+      department: "Engineering",
+      priority: "HIGH",
+      startTime: "23:10",
+      endTime: "02:10",
+      durationHours: 3,
+    },
+    {
+      day: 4,
+      ref: "TRD-LNL-124",
+      title: "Traction bonding audit",
+      department: "TRD",
+      priority: "MEDIUM",
+      startTime: "01:00",
+      endTime: "02:45",
+      durationHours: 1.75,
+    },
+    {
+      day: 5,
+      ref: "SNT-LNL-214",
+      title: "Signal cable health check",
+      department: "S&T",
+      priority: "LOW",
+      startTime: "03:00",
+      endTime: "05:00",
+      durationHours: 2,
+    },
+    {
+      day: 6,
+      ref: "TMS-LNL-063",
+      title: "Track geometry recording",
+      department: "Engineering",
+      priority: "MEDIUM",
+      startTime: "00:30",
+      endTime: "03:30",
+      durationHours: 3,
+    },
+  ];
+
+  return Array.from({ length: 7 }, (_, day) => ({
+    date: addDays(startDate, day),
+    items: planned
+      .filter((item) => item.day === day)
+      .map((item) => ({
+        key: `demo-week-${day}-${item.ref}`,
+        ref: item.ref,
+        title: item.title,
+        department: item.department,
+        priority: item.priority,
+        status: "scheduled" as const,
+        durationHours: item.durationHours,
+        window: {
+          date: addDays(startDate, day),
+          startTime: item.startTime,
+          endTime: item.endTime,
+        },
+        source: "station" as const,
+      })),
+  }));
 }
 
 /** Overdue test that works for both sources. */
@@ -583,6 +697,8 @@ function Dashboard() {
   const today = todayISO();
   const overdueCount = openItems.filter((i) => itemOverdue(i, today)).length;
   const pickerItem = openItems.find((i) => i.key === pickerKey) ?? null;
+  // Dashboard-only demo timeline: always follows today, independent of backend task dates.
+  const weeklySchedule = useMemo(() => buildDemoWeeklySchedule(today), [today]);
 
   const handleComplete = (item: WorkItem) => {
     if (item.source === "station") {
@@ -615,26 +731,27 @@ function Dashboard() {
             <h1 className="max-w-4xl font-display text-2xl font-bold uppercase leading-tight tracking-tight text-cream sm:text-3xl">
               {activeStation.name} Station Dashboard
             </h1>
-            <div className="grid gap-2 border-t border-line/70 pt-3 text-xs text-steel sm:grid-cols-3 sm:gap-4">
-              <div className="min-w-0">
-                <span className="block text-[10px] font-semibold uppercase tracking-wide text-steel">
-                  Section
-                </span>
-                <span className="font-semibold text-cream">{activeStation.sectionId}</span>
-              </div>
-              <div className="min-w-0">
-                <span className="block text-[10px] font-semibold uppercase tracking-wide text-steel">
-                  Line
-                </span>
-                <span className="font-semibold text-cream">{activeStation.lines}</span>
-              </div>
-              <div className="min-w-0">
-                <span className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-steel">
-                  <Clock className="size-3.5 text-clear" />
-                  Default night window
-                </span>
-                <span className="font-semibold text-clear">{activeStation.quietWindow.label}</span>
-              </div>
+            <div className="flex items-center gap-2 text-xs text-steel">
+              <span className="text-[10px] font-semibold uppercase tracking-wide">Section</span>
+              <span className="font-semibold text-cream">{activeStation.sectionId}</span>
+            </div>
+
+            <div className="flex flex-wrap gap-3 pt-1">
+              <button
+                type="button"
+                onClick={() => setIsInboxOpen(true)}
+                className="flex items-center justify-center gap-2 rounded-lg border border-signal/40 bg-signal/15 px-4 py-3 text-xs font-semibold text-signal transition hover:bg-signal/25"
+              >
+                <Mail className="size-4" />
+                <span>Official Mailbox</span>
+              </button>
+
+              <Link to="/requests/new" className="min-w-0">
+                <ChromeButton className="flex items-center justify-center gap-2 px-4 py-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_10px_rgba(15,23,42,0.12)]">
+                  <Plus className="size-4" />
+                  <span>New Request</span>
+                </ChromeButton>
+              </Link>
             </div>
           </div>
 
@@ -647,46 +764,127 @@ function Dashboard() {
               </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-              <button
-                type="button"
-                onClick={() => setIsInboxOpen(true)}
-                className="flex items-center justify-center gap-2 rounded-lg border border-signal/40 bg-signal/15 px-4 py-3 text-xs font-semibold text-signal transition hover:bg-signal/25"
-              >
-                <Mail className="size-4" />
-                <span>Official Mailbox</span>
-              </button>
-
-              <Link to="/requests/new" className="min-w-0">
-                <ChromeButton className="flex w-full items-center justify-center gap-2 px-4 py-3">
-                  <Plus className="size-4" />
-                  <span>New Request</span>
-                </ChromeButton>
-              </Link>
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Station health */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <Stat
-          label="Station Defects"
-          value={String(openItems.length)}
-          sub={overdueCount > 0 ? `${overdueCount} past their planned date` : "All within plan"}
-          tone={overdueCount > 0 ? "signal" : undefined}
-        />
-        <Link to="/risks">
+      {/* Weekly schedule + station health */}
+      <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_280px]">
+        <Panel
+          title="Weekly maintenance schedule"
+          right={<Link to="/schedule" className="hover:underline">VIEW FULL SCHEDULE →</Link>}
+        >
+          <div className="overflow-x-auto rounded-lg border border-line/70 bg-ink2">
+            <div className="min-w-[760px]">
+              <div className="grid grid-cols-[112px_minmax(0,1fr)] border-b border-line/70 bg-ink3/60 px-3 py-2 text-[10px] uppercase tracking-wide text-steel">
+                <span>Date</span>
+                <div className="grid grid-cols-7">
+                  {["00:00", "04:00", "08:00", "12:00", "16:00", "20:00", "24:00"].map(
+                    (hour) => (
+                      <span key={hour} className="text-center last:text-right">
+                        {hour}
+                      </span>
+                    ),
+                  )}
+                </div>
+              </div>
+
+              <div className="divide-y divide-line/60">
+                {weeklySchedule.map(({ date, items }) => {
+                  const isToday = date === today;
+                  const rowHeight = Math.max(56, items.length * 34 + 16);
+
+                  return (
+                    <div
+                      key={date}
+                      className={`grid grid-cols-[112px_minmax(0,1fr)] items-stretch ${
+                        isToday ? "bg-signal/5" : ""
+                      }`}
+                    >
+                      <div className={`border-r border-line/60 px-3 py-3 ${isToday ? "bg-signal/10" : "bg-ink3/30"}`}>
+                        <div className="text-[10px] font-semibold uppercase tracking-wide text-steel">
+                          {weekdayName(date).slice(0, 3)}
+                        </div>
+                        <div className="mt-0.5 text-xs font-semibold text-cream">
+                          {prettyDate(date)}
+                        </div>
+                        {isToday ? <Tag tone="signal">TODAY</Tag> : null}
+                      </div>
+
+                      <div
+                        className="relative bg-ink2"
+                        style={{
+                          minHeight: `${rowHeight}px`,
+                          backgroundImage:
+                            "repeating-linear-gradient(to right, transparent 0, transparent calc(16.666% - 1px), rgba(148, 163, 184, 0.16) calc(16.666% - 1px), rgba(148, 163, 184, 0.16) 16.666%)",
+                        }}
+                      >
+                        {items.length ? (
+                          items.map((item, index) => {
+                            const style = timeWindowStyle(item.window?.startTime, item.window?.endTime);
+                            const className =
+                              "absolute flex min-w-0 items-center overflow-hidden rounded border border-signal/50 bg-signal/20 px-2 text-[10px] font-semibold text-cream transition hover:bg-signal/30";
+                            const content = (
+                              <span className="truncate">
+                                {ampm(item.window?.startTime)} – {ampm(item.window?.endTime)} · {item.title}
+                              </span>
+                            );
+
+                            return item.requestId ? (
+                              <Link
+                                key={item.key}
+                                to="/requests/$requestId"
+                                params={{ requestId: item.requestId }}
+                                className={className}
+                                style={{ ...style, top: `${8 + index * 34}px`, height: "26px" }}
+                              >
+                                {content}
+                              </Link>
+                            ) : (
+                              <Link
+                                key={item.key}
+                                to="/schedule"
+                                className={className}
+                                style={{ ...style, top: `${8 + index * 34}px`, height: "26px" }}
+                              >
+                                {content}
+                              </Link>
+                            );
+                          })
+                        ) : (
+                          <span className="absolute inset-y-0 left-2 flex items-center text-[10px] text-steel">
+                            No scheduled maintenance
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </Panel>
+
+        <div className="grid gap-3">
           <Stat
-            label="Critical assets"
-            value={count(critical)}
-            tone="danger"
-            sub="≥ 60% failure probability"
+            label="Station Defects"
+            value={String(openItems.length)}
+            sub={overdueCount > 0 ? `${overdueCount} past their planned date` : "All within plan"}
+            tone={overdueCount > 0 ? "signal" : undefined}
           />
-        </Link>
-        <Link to="/risks">
-          <Stat label="High-risk assets" value={count(high)} tone="signal" sub="40 – 59%" />
-        </Link>
+          <Link to="/risks">
+            <Stat label="Critical assets" value={count(critical)} tone="danger" sub="≥ 60% failure probability" />
+          </Link>
+          <Link to="/risks">
+            <Stat label="High-risk assets" value={count(high)} tone="signal" sub="40 – 59%" />
+          </Link>
+          <Link
+            to="/schedule"
+            className="rounded-md border border-line bg-white px-3 py-2.5 text-center text-[11px] font-semibold uppercase tracking-wide text-cream transition hover:border-signal hover:bg-ink3"
+          >
+            Open maintenance schedule
+          </Link>
+        </div>
       </div>
 
       <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1.55fr)_minmax(320px,0.85fr)]">

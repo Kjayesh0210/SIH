@@ -119,6 +119,7 @@
 @layer base {
   * {
     border-color: var(--color-border);
+    font-family: var(--font-body-family);
   }
 
   html {
@@ -145,6 +146,27 @@
 
   button {
     cursor: pointer;
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease,
+      border-color 160ms ease,
+      background-color 160ms ease;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  @media (hover: hover) {
+    button:not(:disabled):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 5px 12px rgba(15, 23, 42, 0.12);
+    }
+  }
+
+  button:focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 2px;
   }
 
   ::selection {

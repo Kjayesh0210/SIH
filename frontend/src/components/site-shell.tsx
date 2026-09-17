@@ -156,11 +156,11 @@ function StatusLamp({
 }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="text-[10px] uppercase tracking-[0.14em] text-steel">{label}</span>
+      <span className="text-[11px] uppercase tracking-[0.14em] text-steel">{label}</span>
 
       <Lamp tone={isError ? "danger" : isLoading ? "signal" : "clear"} />
 
-      <span className={isError ? "text-[10px] text-danger" : "text-[10px] text-clear"}>
+      <span className={isError ? "text-[11px] text-danger" : "text-[11px] text-clear"}>
         {isError ? "DOWN" : isLoading ? "…" : text}
       </span>
     </div>
@@ -178,7 +178,7 @@ function TopUtilityBar({ onStationClick }: { onStationClick: () => void }) {
       <div className="flex h-14 items-center gap-6 px-6">
         <button
           onClick={onStationClick}
-          className="flex items-center gap-2 rounded-md border border-line bg-white px-3 py-2 text-[10px] text-cream transition hover:border-slate-300 hover:bg-slate-50"
+          className="flex items-center gap-2 rounded-md border border-line bg-white px-3 py-2 text-[11px] text-cream transition hover:border-slate-300 hover:bg-slate-50"
           title="Switch station"
         >
           <MapPin className="size-3.5 text-signal" />
@@ -200,17 +200,17 @@ function TopUtilityBar({ onStationClick }: { onStationClick: () => void }) {
           <Mail className="size-4 text-steel" />
 
           <div className="text-left">
-            <div className="text-[9px] uppercase tracking-[0.14em] text-steel">
+            <div className="text-[10px] uppercase tracking-[0.14em] text-steel">
               Engineer Mailbox
             </div>
 
-            <div className="mt-0.5 max-w-[190px] truncate text-[10px] text-cream">
+            <div className="mt-0.5 max-w-[190px] truncate text-[11px] text-cream">
               {userProfile.email}
             </div>
           </div>
 
           {unreadCount > 0 ? (
-            <span className="flex size-4 items-center justify-center rounded-full bg-danger text-[9px] font-bold text-white">
+            <span className="flex size-4 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-white">
               {unreadCount}
             </span>
           ) : null}
@@ -219,7 +219,7 @@ function TopUtilityBar({ onStationClick }: { onStationClick: () => void }) {
         <div className="h-7 w-px bg-line" />
 
         <div className="flex items-center gap-3">
-          <span className="text-[9px] uppercase tracking-[0.14em] text-steel">
+          <span className="text-[10px] uppercase tracking-[0.14em] text-steel">
             Operating Persona
           </span>
 
@@ -264,14 +264,6 @@ function Sidebar() {
         </div>
 
         <SidebarNavigation />
-
-        <div className="mt-auto border-t border-line px-6 py-4">
-          <div className="text-[9px] uppercase tracking-[0.14em] text-steel">
-            Railway Operations
-          </div>
-
-          <div className="mt-1 text-[10px] text-cream">Coordinated Block Planning</div>
-        </div>
       </div>
     </aside>
   );
