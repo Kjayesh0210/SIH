@@ -16,13 +16,13 @@ export function Panel({
   bodyClassName?: string;
 }) {
   return (
-    <section className={cn("rounded-lg hairline overflow-hidden bg-ink2/80", className)}>
+    <section className={cn("overflow-hidden rounded-xl bg-ink2/80 hairline", className)}>
       {title ? (
-        <header className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-line bg-ink3/60">
-          <span className=" text-[11px] tracking-[0.2em] uppercase text-steel">
+        <header className="flex items-center justify-between gap-3 border-b border-line bg-ink3/60 px-4 py-3">
+          <span className="text-[11px] uppercase tracking-[0.16em] text-steel">
             {title}
           </span>
-          {right ? <span className=" text-[10px] text-signal">{right}</span> : null}
+          {right ? <span className="text-[10px] text-signal">{right}</span> : null}
         </header>
       ) : null}
       <div className={cn("p-4", bodyClassName)}>{children}</div>
@@ -140,14 +140,14 @@ export function PageHeader({
   actions?: ReactNode;
 }) {
   return (
-    <div className="rise flex flex-wrap items-end justify-between gap-4">
+    <div className="rise flex flex-wrap items-end justify-between gap-3">
       <div>
-        <h1 className="font-display text-3xl font-semibold leading-none tracking-tight text-cream">
+        <h1 className="font-display text-3xl font-semibold leading-tight tracking-tight text-cream">
           {title}
         </h1>
 
         {intro ? (
-          <p className="mt-3 max-w-[70ch] text-sm leading-relaxed text-steel">{intro}</p>
+          <p className="mt-2 max-w-[70ch] text-sm leading-relaxed text-steel">{intro}</p>
         ) : null}
       </div>
 
@@ -175,7 +175,7 @@ export function ChromeButton({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "chrome rounded-md px-5 py-3 font-display text-sm font-semibold tracking-wide uppercase hairline transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-40",
+        "chrome rounded-md px-4 py-2.5 font-display text-sm font-semibold uppercase tracking-wide hairline transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-40",
         className,
       )}
     >

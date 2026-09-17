@@ -32,7 +32,7 @@ function RiskDetail() {
   const asset = useQuery(assetQuery(assetId));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <Link to="/risks" className=" text-[11px] text-steel hover:text-cream">
         ← ALL ASSETS BY RISK
       </Link>
@@ -55,7 +55,7 @@ function RiskDetail() {
         }
       />
 
-      <div className="grid gap-6 xl:grid-cols-12">
+      <div className="grid gap-4 xl:grid-cols-12">
         <div className="space-y-6 xl:col-span-5">
           <Panel title="Latest risk score">
             <AsyncBlock

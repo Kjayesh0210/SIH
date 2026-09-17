@@ -308,14 +308,14 @@ function TaskCard({
         : "border-line bg-ink3/40";
 
   return (
-    <div className={`rounded-lg border transition ${border}`}>
+    <div className={`rounded-xl border transition ${border}`}>
       <button
         type="button"
         onClick={onToggle}
-        className="flex w-full flex-col gap-3 p-4 text-left sm:flex-row sm:items-start sm:justify-between"
+        className="flex w-full flex-col gap-4 p-4 text-left sm:flex-row sm:items-start sm:justify-between sm:p-5"
       >
         <div className="flex-1 space-y-1.5">
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             <ChevronDown
               className={`size-3.5 text-steel transition ${expanded ? "rotate-180" : ""}`}
             />
@@ -338,7 +338,7 @@ function TaskCard({
             ) : null}
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 pl-6  text-[11px] text-steel">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 pl-6 text-[11px] text-steel">
             <span>Dept: {item.department}</span>
             {item.fromKm !== undefined && item.toKm !== undefined ? (
               <>
@@ -595,12 +595,12 @@ function Dashboard() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Station identity + primary action */}
-      <div className="rounded-xl border border-line bg-gradient-to-r from-ink2 via-ink2 to-ink3/40 p-6 hairline">
-        <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
-          <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2  text-[11px] text-steel">
+      <div className="rounded-2xl border border-line bg-gradient-to-r from-ink2 via-ink2 to-ink3/40 p-5 hairline sm:p-7">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+          <div className="min-w-0 space-y-4">
+            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-steel">
               <span className="flex items-center gap-1 font-bold text-signal">
                 <MapPin className="size-3.5" />
                 {activeStation.zone}
@@ -612,56 +612,64 @@ function Dashboard() {
                 STATION CODE: {activeStation.code}
               </span>
             </div>
-            <h1 className="font-display text-3xl font-bold uppercase tracking-tight text-cream">
+            <h1 className="max-w-4xl font-display text-2xl font-bold uppercase leading-tight tracking-tight text-cream sm:text-3xl">
               {activeStation.name} Station Dashboard
             </h1>
-            <div className="flex flex-wrap items-center gap-4  text-xs text-steel">
-              <div>
-                Section: <span className="font-semibold text-cream">{activeStation.sectionId}</span>
+            <div className="grid gap-2 border-t border-line/70 pt-3 text-xs text-steel sm:grid-cols-3 sm:gap-4">
+              <div className="min-w-0">
+                <span className="block text-[10px] font-semibold uppercase tracking-wide text-steel">
+                  Section
+                </span>
+                <span className="font-semibold text-cream">{activeStation.sectionId}</span>
               </div>
-              <span>·</span>
-              <div>
-                Line: <span className="font-semibold text-cream">{activeStation.lines}</span>
+              <div className="min-w-0">
+                <span className="block text-[10px] font-semibold uppercase tracking-wide text-steel">
+                  Line
+                </span>
+                <span className="font-semibold text-cream">{activeStation.lines}</span>
               </div>
-              <span>·</span>
-              <div className="flex items-center gap-1">
-                <Clock className="size-3.5 text-clear" />
-                <span>Default night window: </span>
+              <div className="min-w-0">
+                <span className="flex items-center gap-1 text-[10px] font-semibold uppercase tracking-wide text-steel">
+                  <Clock className="size-3.5 text-clear" />
+                  Default night window
+                </span>
                 <span className="font-semibold text-clear">{activeStation.quietWindow.label}</span>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-            <div className="rounded-lg border border-line/80 bg-ink/70 px-4 py-2.5  text-xs">
+          <div className="flex min-w-0 flex-col gap-3 lg:w-[360px]">
+            <div className="rounded-lg border border-line/80 bg-ink/70 px-4 py-3 text-xs">
               <div className="text-[10px] font-semibold uppercase text-steel">Section Engineer</div>
               <div className="font-semibold text-cream">{userProfile.name}</div>
-              <div className="max-w-[200px] truncate text-[11px] text-signal">
+              <div className="truncate text-[11px] text-signal">
                 {userProfile.email}
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setIsInboxOpen(true)}
-              className="flex items-center gap-2 rounded-lg border border-signal/40 bg-signal/15 px-4 py-3  text-xs font-semibold text-signal transition hover:bg-signal/25"
-            >
-              <Mail className="size-4" />
-              <span>Official Mailbox</span>
-            </button>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+              <button
+                type="button"
+                onClick={() => setIsInboxOpen(true)}
+                className="flex items-center justify-center gap-2 rounded-lg border border-signal/40 bg-signal/15 px-4 py-3 text-xs font-semibold text-signal transition hover:bg-signal/25"
+              >
+                <Mail className="size-4" />
+                <span>Official Mailbox</span>
+              </button>
 
-            <Link to="/requests/new">
-              <ChromeButton className="flex items-center gap-2 px-4 py-3">
-                <Plus className="size-4" />
-                <span>New Request</span>
-              </ChromeButton>
-            </Link>
+              <Link to="/requests/new" className="min-w-0">
+                <ChromeButton className="flex w-full items-center justify-center gap-2 px-4 py-3">
+                  <Plus className="size-4" />
+                  <span>New Request</span>
+                </ChromeButton>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Station health */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Stat
           label="Station Defects"
           value={String(openItems.length)}
@@ -681,8 +689,8 @@ function Dashboard() {
         </Link>
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-12">
-        <div className="space-y-6 xl:col-span-8">
+      <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1.55fr)_minmax(320px,0.85fr)]">
+        <div className="min-w-0 space-y-6">
           <Panel
             title="Station Maintenance Tasks Workbench"
             right={
@@ -691,13 +699,18 @@ function Dashboard() {
               </span>
             }
           >
-            <div className="space-y-4">
-              <p className=" text-xs text-steel">
+            <div className="space-y-5">
+              <div className="flex flex-wrap items-end justify-between gap-3 border-b border-line/70 pb-4">
+                <p className="max-w-3xl text-xs leading-relaxed text-steel">
                 Work logged for <strong className="text-cream">{activeStation.name}</strong> that is
                 still open, including block requests filed through the AI engine. Items stay here
                 until you mark them completed. The AI checks timetables, live delays and other
                 departments' work internally when it allots a window.
-              </p>
+                </p>
+                <div className="shrink-0 rounded-md bg-ink3 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-steel">
+                  Sorted by urgency
+                </div>
+              </div>
 
               {requests.isError ? (
                 <p className=" text-[11px] text-danger">
@@ -713,7 +726,7 @@ function Dashboard() {
                   </p>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="max-h-[640px] space-y-3 overflow-y-auto pr-2">
                   {openItems.map((item) => (
                     <div key={item.key}>
                       <TaskCard
@@ -748,7 +761,7 @@ function Dashboard() {
           <StationLens />
         </div>
 
-        <div className="space-y-6 xl:col-span-4">
+        <div className="min-w-0 space-y-6">
           <Panel
             title="Live Train Telemetry"
             right={
@@ -763,9 +776,12 @@ function Dashboard() {
                 affect blocks held at this station.
               </p>
 
-              <div className="space-y-2.5 divide-y divide-line/30">
+              <div className="space-y-2">
                 {liveTrains.map((trn) => (
-                  <div key={trn.number} className="space-y-1 pt-2.5 first:pt-0">
+                  <div
+                    key={trn.number}
+                    className="space-y-2 rounded-lg border border-line/70 bg-ink3/35 p-3"
+                  >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
                         <Train className="size-3.5 text-steel" />
@@ -803,7 +819,7 @@ function Dashboard() {
 
           <Panel title="System status">
             <div className="space-y-4">
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 rounded-lg border border-line/70 bg-ink3/35 p-3">
                 <Lamp tone={backend.isError ? "danger" : backend.isLoading ? "signal" : "clear"} />
                 <div>
                   <div className=" text-[11px] text-cream">NODE BACKEND</div>
@@ -812,7 +828,7 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
-              <div className="flex items-start gap-3">
+              <div className="flex items-start gap-3 rounded-lg border border-line/70 bg-ink3/35 p-3">
                 <Lamp tone={engine.isError ? "danger" : engine.isLoading ? "signal" : "clear"} />
                 <div>
                   <div className=" text-[11px] text-cream">PYTHON AI ENGINE</div>
@@ -825,10 +841,10 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
-              <div className="border-t border-line pt-4">
+              <div className="border-t border-line pt-5">
                 <div className="label-mono mb-3 tracking-widest">Impact this cycle</div>
                 {k ? (
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-2.5">
                     <Meta
                       label="Blocks"
                       value={`${k["blocksBefore"] ?? "—"} → ${k["blocksAfter"] ?? "—"}`}

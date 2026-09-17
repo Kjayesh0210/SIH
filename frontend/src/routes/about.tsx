@@ -61,14 +61,14 @@ const SOURCES = [
 
 function About() {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="ABOUT · HOW IT WORKS"
         title="Shadow blocking, explained"
         intro="One track possession, planned once, shared by every department that needs the same kilometres on the same night — with the safety steps ordered so nobody works under live wires."
       />
 
-      <div className="grid gap-6 lg:grid-cols-12">
+      <div className="grid gap-4 lg:grid-cols-12">
         <Panel title="Departments involved" className="lg:col-span-7">
           <div className="space-y-3">
             {DEPTS.map((d) => (

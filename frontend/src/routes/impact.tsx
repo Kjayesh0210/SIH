@@ -146,7 +146,7 @@ function Impact() {
   const { data, isLoading, error } = useQuery(kpisQuery);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="EVALUATION · IMPACT"
         title="Before vs after AI planning"

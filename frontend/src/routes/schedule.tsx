@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Field, PageHeader, Panel, Tag, TextInput } from "@/components/control";
+import { Field, PageHeader, Panel, Stat, Tag, TextInput } from "@/components/control";
 import { useStation, todayISO } from "@/lib/station-context";
 import { addDays, prettyDate, to12h, weekdayName } from "@/lib/block-plan";
 import { CalendarDays } from "lucide-react";
@@ -133,61 +133,107 @@ function Schedule() {
         intro="Every block allotted at this station. Switch between a single day, a seven-day run and a whole month — the dates below follow whichever you pick."
       />
 
-      <Panel title="View">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div>
-            <span className="label-mono block tracking-widest">Horizon</span>
-            <div className="mt-2 flex flex-wrap gap-2">
-              {HORIZONS.map((h) => (
-                <button
-                  key={h.id}
-                  type="button"
-                  onClick={() => setHorizon(h.id)}
-                  className={`rounded-md border px-4 py-2 font-display text-xs font-semibold uppercase tracking-wider transition ${
-                    horizon === h.id
-                      ? "border-signal bg-signal/15 text-signal"
-                      : "border-line bg-ink3/40 text-steel hover:border-signal/50 hover:text-cream"
-                  }`}
-                >
-                  {h.label}
-                </button>
-              ))}
+      <div className="grid items-start gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+        <aside className="space-y-4">
+          <Panel title="Schedule controls" right={activeStation.code}>
+            <div className="space-y-5">
+              <div>
+                <span className="label-mono block tracking-widest">Planning horizon</span>
+                <div className="mt-2 grid gap-2">
+                  {HORIZONS.map((h) => (
+                    <button
+                      key={h.id}
+                      type="button"
+                      onClick={() => setHorizon(h.id)}
+                      className={`rounded-md border px-3 py-2.5 text-left font-display text-xs font-semibold uppercase tracking-wider transition ${
+                        horizon === h.id
+                          ? "border-signal bg-signal/15 text-signal"
+                          : "border-line bg-ink3/40 text-steel hover:border-signal/50 hover:text-cream"
+                      }`}
+                    >
+                      {h.label}
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-2 text-[10px] text-steel">
+                  {HORIZONS.find((h) => h.id === horizon)?.hint}
+                </p>
+              </div>
+
+              <Field label={dateLabel}>
+                <TextInput
+                  type="date"
+                  value={anchor}
+                  onChange={(e) => setAnchor(e.target.value || today)}
+                />
+              </Field>
             </div>
-            <p className="mt-2  text-[10px] text-steel">
-              {HORIZONS.find((h) => h.id === horizon)?.hint}
+          </Panel>
+
+          <div className="grid gap-3">
+            <Stat
+              label="Scheduled jobs"
+              value={jobCount}
+              sub={`Across ${activeDays.length} active days`}
+            />
+            <Stat
+              label="Block sessions"
+              value={blockCount}
+              tone="signal"
+              sub={`Within ${rangeLabel}`}
+            />
+            <Stat
+              label="Planned hours"
+              value={`${totalHours}h`}
+              tone="clear"
+              sub="Possession time allotted"
+            />
+          </div>
+
+  </aside>
+
+        <div className="min-w-0 space-y-4">
+          <Panel
+            title="Scheduled work"
+            right={
+              <div className="flex items-center gap-1 text-[10px] text-steel">
+              <button
+                type="button"
+                onClick={() => shift(-1)}
+                className="rounded px-2 py-1 transition hover:bg-ink3 hover:text-cream"
+                aria-label="Previous period"
+              >
+                ←
+              </button>
+              <button
+                type="button"
+                onClick={() => setAnchor(today)}
+                className="rounded px-2 py-1 font-semibold uppercase tracking-wide transition hover:bg-ink3 hover:text-cream"
+              >
+                Today
+              </button>
+              <button
+                type="button"
+                onClick={() => shift(1)}
+                className="rounded px-2 py-1 transition hover:bg-ink3 hover:text-cream"
+                aria-label="Next period"
+              >
+                →
+              </button>
+              </div>
+            }
+          >
+        <div className="mb-4 flex flex-wrap items-end justify-between gap-3 border-b border-line/70 pb-3">
+          <div>
+            <div className="font-display text-xl font-semibold text-cream">{rangeLabel}</div>
+            <p className="mt-1 text-[11px] text-steel">
+              {activeDays.length ? `${activeDays.length} active days with scheduled work` : "No active days in this view"}
             </p>
           </div>
-
-          <Field label={dateLabel}>
-            <TextInput
-              type="date"
-              value={anchor}
-              onChange={(e) => setAnchor(e.target.value || today)}
-            />
-          </Field>
-        </div>
-      </Panel>
-
-      <Panel
-        title={rangeLabel}
-        right={
-          <div className="flex items-center gap-2  text-[10px] text-steel">
-            <span>
-              {jobCount} JOB{jobCount === 1 ? "" : "S"} · {blockCount} BLOCK
-              {blockCount === 1 ? "" : "S"} · {totalHours}H
-            </span>
-            <button type="button" onClick={() => shift(-1)} className="px-1.5 hover:text-cream">
-              ←
-            </button>
-            <button type="button" onClick={() => setAnchor(today)} className="hover:text-cream">
-              TODAY
-            </button>
-            <button type="button" onClick={() => shift(1)} className="px-1.5 hover:text-cream">
-              →
-            </button>
+          <div className="rounded-md bg-ink3 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-steel">
+            {horizon} view
           </div>
-        }
-      >
+        </div>
         {activeDays.length === 0 ? (
           <div className="rounded-lg border border-line bg-ink3/30 p-6 text-center">
             <CalendarDays className="mx-auto size-5 text-steel" />
@@ -203,73 +249,86 @@ function Schedule() {
             </p>
           </div>
         ) : (
-          <div className="space-y-3">
-            {activeDays.map((date) => {
-              const dayBlocks = (byDate.get(date) ?? []).sort((a, b) =>
-                a.startTime.localeCompare(b.startTime),
-              );
-              const isToday = date === today;
+          <div className="max-h-[680px] overflow-y-auto rounded-lg border border-line/60 bg-ink2">
+            <div className="divide-y divide-line/60">
+              {activeDays.map((date) => {
+                const dayBlocks = (byDate.get(date) ?? []).sort((a, b) =>
+                  a.startTime.localeCompare(b.startTime),
+                );
+                const isToday = date === today;
 
-              return (
-                <div
-                  key={date}
-                  className={`rounded-lg border p-4 ${
-                    isToday ? "border-signal/60 bg-signal/5" : "border-line bg-ink3/40"
-                  }`}
-                >
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="font-display text-base font-semibold text-cream">
-                      {weekdayName(date)} {prettyDate(date)}
-                    </span>
-                    {isToday ? <Tag tone="signal">TODAY</Tag> : null}
-                    <span className=" text-[10px] text-steel">
-                      {dayBlocks.length} block{dayBlocks.length > 1 ? "s" : ""} ·{" "}
-                      {dayBlocks.reduce((s, b) => s + b.hours, 0)}h
-                    </span>
-                  </div>
-
-                  <div className="mt-3 space-y-2">
-                    {dayBlocks.map((b) => (
-                      <div
-                        key={b.blockId}
-                        className="flex flex-wrap items-center justify-between gap-2 rounded border border-line/60 bg-ink2 px-3 py-2  text-[11px]"
-                      >
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="text-signal">{b.blockId}</span>
-                          <span className="text-cream">{b.title}</span>
-                          {b.totalBlocks > 1 ? (
-                            <Tag tone="steel">
-                              PART {b.sequence}/{b.totalBlocks}
-                            </Tag>
-                          ) : null}
-                          <Tag
-                            tone={
-                              b.priority === "CRITICAL"
-                                ? "danger"
-                                : b.priority === "HIGH"
-                                  ? "signal"
-                                  : "steel"
-                            }
-                          >
-                            {b.priority}
-                          </Tag>
-                        </div>
-                        <div className="flex flex-wrap items-center gap-3 text-steel">
-                          <span>{b.department}</span>
-                          <span className="text-cream">
-                            {to12h(b.startTime)} – {to12h(b.endTime)}
-                          </span>
-                          <span>{b.hours}h</span>
-                        </div>
+                return (
+                  <div key={date}>
+                    <div
+                      className={`flex items-center justify-between gap-3 px-4 py-3 ${
+                        isToday ? "bg-signal/10" : "bg-ink3/40"
+                      }`}
+                    >
+                      <div className="flex flex-wrap items-center gap-2">
+                        <CalendarDays className="size-3.5 text-steel" />
+                        <span className="font-display text-base font-semibold text-cream">
+                          {weekdayName(date)} {prettyDate(date)}
+                        </span>
+                        {isToday ? <Tag tone="signal">TODAY</Tag> : null}
                       </div>
-                    ))}
+                      <span className="text-[11px] uppercase tracking-wide text-steel">
+                        {dayBlocks.length} block{dayBlocks.length > 1 ? "s" : ""} ·{" "}
+                        {dayBlocks.reduce((s, b) => s + b.hours, 0)}h
+                      </span>
+                    </div>
+
+                    <div className="space-y-2 p-3 sm:p-4">
+                      {dayBlocks.map((b) => (
+                        <div key={b.blockId} className="grid gap-3 sm:grid-cols-[210px_minmax(0,1fr)]">
+                          <div className="flex items-center justify-between gap-2 rounded-lg border border-line bg-ink3/60 px-3 py-3">
+                            <div className="whitespace-nowrap text-[15px] font-semibold text-cream">
+                              {to12h(b.startTime)}
+                            </div>
+                            <div className="text-xs text-steel">→</div>
+                            <div className="whitespace-nowrap text-[15px] font-semibold text-cream">
+                              {to12h(b.endTime)}
+                            </div>
+                            <div className="border-l border-line/70 pl-2 text-[11px] text-steel">
+                              {b.hours}h
+                            </div>
+                          </div>
+
+                          <div className="min-w-0 rounded-lg border border-line/70 bg-ink2 px-3 py-2.5">
+                            <div className="flex flex-wrap items-start justify-between gap-2">
+                              <div className="min-w-0">
+                                <div className="truncate text-sm font-semibold text-cream">
+                                  {b.title}
+                                </div>
+                                <div className="mt-0.5 truncate text-[10px] text-steel">
+                                  {b.blockId} · {b.department}
+                                  {b.totalBlocks > 1 ? ` · Part ${b.sequence}/${b.totalBlocks}` : ""}
+                                </div>
+                              </div>
+                              <Tag
+                                tone={
+                                  b.priority === "CRITICAL"
+                                    ? "danger"
+                                    : b.priority === "HIGH"
+                                      ? "signal"
+                                      : "clear"
+                                }
+                              >
+                                {b.priority}
+                              </Tag>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         )}
-      </Panel>
+          </Panel>
+        </div>
+      </div>
     </div>
   );
 }

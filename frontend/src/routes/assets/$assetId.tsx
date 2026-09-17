@@ -28,7 +28,7 @@ function AssetDetail() {
   const { data, isLoading, error } = useQuery(assetDetailsQuery(assetId));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <Link to="/assets" className=" text-[11px] text-steel hover:text-cream">
         ← ASSET REGISTER
       </Link>
@@ -100,7 +100,7 @@ function AssetView({ details: d }: { details: AssetDetails }) {
   const totalCost = d.maintenance.reduce((sum, m) => sum + (m.cost_inr ?? 0), 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <PageHeader
         eyebrow={`ASSET · ${asset.asset_type ?? "UNKNOWN"}`}
         title={asset.asset_id}
@@ -155,7 +155,7 @@ function AssetView({ details: d }: { details: AssetDetails }) {
         />
       </div>
 
-      <div className="grid gap-6 xl:grid-cols-12">
+      <div className="grid gap-4 xl:grid-cols-12">
         <Panel title="ML risk" className="xl:col-span-5">
           {risk ? (
             <div className="space-y-4">

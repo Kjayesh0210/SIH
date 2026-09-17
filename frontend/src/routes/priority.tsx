@@ -104,14 +104,14 @@ function Priority() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="AI ENGINE · PRIORITY"
         title="Score a maintenance task"
         intro="Criticality, safety impact, overdue days, urgency, asset condition and ML failure probability are combined into a single 0–100 priority."
       />
 
-      <div className="grid gap-6 xl:grid-cols-12">
+      <div className="grid gap-4 xl:grid-cols-12">
         <Panel title="Task" className="xl:col-span-7">
           <form onSubmit={onSubmit} className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">

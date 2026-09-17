@@ -77,7 +77,7 @@ function DataPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="ADMIN · DATA & SYSTEM"
         title="Data pipeline"
@@ -125,7 +125,7 @@ function DataPage() {
         </div>
       </Panel>
 
-      <div className="grid gap-6 xl:grid-cols-12">
+      <div className="grid gap-4 xl:grid-cols-12">
         <Panel title="1 · Import CSV datasets" className="xl:col-span-7">
           <form onSubmit={onUpload} className="space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">

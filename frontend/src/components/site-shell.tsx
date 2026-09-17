@@ -339,9 +339,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
         <EngineOfflineBanner />
 
-        <main className="mx-auto max-w-[1440px] px-6 py-8">{children}</main>
+        <main className="mx-auto max-w-[1440px] px-6 py-6">{children}</main>
 
-        {!isMapPage ? (
+        {/* {!isMapPage ? (
           <footer className="border-t border-line/70">
             <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-3 px-6 py-6 text-[10px] text-steel">
               <span>
@@ -353,7 +353,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
               </span>
             </div>
           </footer>
-        ) : null}
+        ) : null} */}
       </div>
     </div>
   );

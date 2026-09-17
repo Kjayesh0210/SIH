@@ -63,7 +63,7 @@ function AssistantPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <PageHeader
         eyebrow="AI · ASSISTANT"
         title="Ask about risk, history or the plan"

@@ -71,7 +71,7 @@
   --font-body-family: "Inter", sans-serif;
 
   /* Core palette */
-  --ink: #ffffff;
+  --ink: #e8f1f8;
   --ink2: #f8fafc;
   --ink3: #f1f5f9;
   --line: #e2e8f0;
@@ -87,7 +87,7 @@
   --cream: #111827;
 
   /* Semantic theme */
-  --background: #ffffff;
+  --background: #e8f1f8;
   --foreground: #111827;
 
   --card: #ffffff;
@@ -122,7 +122,7 @@
   }
 
   html {
-    background: #ffffff;
+    background: #e8f1f8;
   }
 
   body {
@@ -130,6 +130,7 @@
     min-width: 320px;
     background: var(--color-background);
     color: var(--color-foreground);
+    font-size: 17px;
     font-family: var(--font-body-family);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

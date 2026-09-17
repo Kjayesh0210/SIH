@@ -34,7 +34,7 @@ function RequestDetail() {
   const { data, isLoading, error } = useQuery(blockRequestQuery(requestId));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <Link to="/dashboard" className=" text-[11px] text-steel hover:text-cream">
         ← ALL REQUESTS
       </Link>
@@ -73,7 +73,7 @@ function RequestView({ request: r }: { request: BlockRequest }) {
       : [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <PageHeader
         eyebrow={`BLOCK REQUEST · ${r.sectionId ?? ""}`}
         title={r.requestId}
@@ -83,7 +83,7 @@ function RequestView({ request: r }: { request: BlockRequest }) {
         actions={<StatusTag status={r.status} />}
       />
 
-      <div className="grid gap-6 xl:grid-cols-12">
+      <div className="grid gap-4 xl:grid-cols-12">
         <div className="space-y-6 xl:col-span-8">
           <Panel title="Window options" right={d?.status ? d.status.replace(/_/g, " ") : undefined}>
             {options.length ? (
