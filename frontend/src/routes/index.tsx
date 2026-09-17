@@ -57,7 +57,7 @@ function Landing() {
     <div className="grid grid-cols-12 gap-6">
       <section className="col-span-12 space-y-6 xl:col-span-7">
         <div className="rise">
-          <div className="inline-flex items-center gap-2 rounded border border-signal/40 px-2 py-1 font-mono text-[10px] tracking-[0.25em] text-signal">
+          <div className="inline-flex items-center gap-2 rounded border border-signal/40 px-2 py-1  text-[10px] tracking-[0.25em] text-signal">
             <Lamp tone="signal" />
             SMART INDIA HACKATHON · PROTOTYPE
           </div>
@@ -81,7 +81,7 @@ function Landing() {
             </Link>
             <Link
               to="/dashboard"
-              className="rounded-md border border-line px-5 py-3 font-mono text-[12px] uppercase text-cream transition hover:bg-ink3"
+              className="rounded-md border border-line px-5 py-3  text-[12px] uppercase text-cream transition hover:bg-ink3"
             >
               Open dashboard
             </Link>
@@ -93,15 +93,15 @@ function Landing() {
 
         <div className="overflow-hidden rounded-lg bg-ink2/80 hairline">
           <div className="flex items-center justify-between border-b border-line bg-ink3/60 px-4 py-2.5">
-            <span className="font-mono text-[11px] tracking-[0.2em] text-steel">
+            <span className=" text-[11px] tracking-[0.2em] text-steel">
               IMPACT · BEFORE → AFTER
             </span>
-            <span className="font-mono text-[10px] text-signal">
+            <span className=" text-[10px] text-signal">
               {data?.evaluation_summary?.corridor ?? "LNL–PUNE"}
             </span>
           </div>
           {isError ? (
-            <div className="flex items-center gap-2 px-4 py-5 font-mono text-[11px] text-danger">
+            <div className="flex items-center gap-2 px-4 py-5  text-[11px] text-danger">
               <Lamp tone="danger" /> AI engine offline — impact numbers unavailable.
             </div>
           ) : (
@@ -114,7 +114,7 @@ function Landing() {
                   </span>
                   <span className="text-signal">{k?.["blocksAfter"] ?? 3}</span>
                 </div>
-                <div className="mt-1 font-mono text-[10px] text-clear">
+                <div className="mt-1  text-[10px] text-clear">
                   {pct(k?.["blocksBefore"] ?? 7, k?.["blocksAfter"] ?? 3)}
                 </div>
               </div>
@@ -126,7 +126,7 @@ function Landing() {
                   </span>
                   <span className="text-signal">{k?.["durationHoursAfter"] ?? 5.0}</span>
                 </div>
-                <div className="mt-1 font-mono text-[10px] text-clear">
+                <div className="mt-1  text-[10px] text-clear">
                   {k?.["downtimeHoursSaved"] ?? 3.5} h saved
                 </div>
               </div>
@@ -138,7 +138,7 @@ function Landing() {
                   </span>
                   <span className="text-clear">{k?.["conflictsAfter"] ?? 0}</span>
                 </div>
-                <div className="mt-1 font-mono text-[10px] text-clear">CLEARED</div>
+                <div className="mt-1  text-[10px] text-clear">CLEARED</div>
               </div>
               <div className="bg-signal/5 p-4">
                 <div className="label-mono tracking-widest">AVAILABILITY</div>
@@ -149,7 +149,7 @@ function Landing() {
                   <span className="text-signal">{k?.["availabilityAfter"] ?? 95.8}</span>
                   <span className="text-sm">%</span>
                 </div>
-                <div className="mt-1 font-mono text-[10px] text-clear">
+                <div className="mt-1  text-[10px] text-clear">
                   +{k?.["availabilityGainPct"] ?? 4.4}%
                 </div>
               </div>
@@ -159,14 +159,14 @@ function Landing() {
 
         <div className="rise grid gap-3 md:grid-cols-3">
           <div className="rounded-lg bg-ink2/70 p-4 hairline">
-            <div className="font-mono text-[10px] tracking-widest text-signal">01 · SUBMIT</div>
+            <div className=" text-[10px] tracking-widest text-signal">01 · SUBMIT</div>
             <p className="mt-2 text-xs leading-relaxed text-steel">
               Track, S&amp;T &amp; TRD file a block request with span, preferred window and
               resources.
             </p>
           </div>
           <div className="rounded-lg bg-ink2/70 p-4 hairline">
-            <div className="font-mono text-[10px] tracking-widest text-clear">
+            <div className=" text-[10px] tracking-widest text-clear">
               02 · AI EVALUATES
             </div>
             <p className="mt-2 text-xs leading-relaxed text-steel">
@@ -175,7 +175,7 @@ function Landing() {
             </p>
           </div>
           <div className="rounded-lg bg-ink2/70 p-4 hairline">
-            <div className="font-mono text-[10px] tracking-widest text-danger">
+            <div className=" text-[10px] tracking-widest text-danger">
               03 · OFFICER DECIDES
             </div>
             <p className="mt-2 text-xs leading-relaxed text-steel">
@@ -206,7 +206,7 @@ function Landing() {
       <section className="col-span-12 xl:col-span-5">
         <div className="rise overflow-hidden rounded-lg bg-ink2/80 hairline">
           <div className="flex items-center justify-between border-b border-line bg-ink3/70 px-4 py-2.5">
-            <div className="font-mono text-[10px] tracking-[0.2em] text-steel">
+            <div className=" text-[10px] tracking-[0.2em] text-steel">
               WHAT THE ENGINE DOES · <span className="text-cream">CAPABILITIES</span>
             </div>
             <Tag tone="clear">AI PLANNER</Tag>
@@ -217,7 +217,7 @@ function Landing() {
               <div key={c.label} className="rounded-md bg-ink3/50 p-3 hairline">
                 <div className="flex items-center gap-2">
                   <Lamp tone={c.tone} pulse={false} />
-                  <span className="font-mono text-[10px] tracking-widest text-cream">
+                  <span className=" text-[10px] tracking-widest text-cream">
                     {c.label}
                   </span>
                 </div>
@@ -227,40 +227,40 @@ function Landing() {
           </div>
 
           <div className="border-t border-line px-4 py-4">
-            <div className="mb-3 font-mono text-[10px] tracking-[0.2em] text-steel">
+            <div className="mb-3  text-[10px] tracking-[0.2em] text-steel">
               INTER-DEPARTMENT SAFETY SEQUENCING
             </div>
             <ol className="relative ml-1.5 space-y-4 border-l border-line">
               <li className="relative pl-5">
                 <span className="absolute -left-[5px] top-1 size-2.5 rounded-full bg-danger text-danger lamp" />
-                <div className="font-mono text-[10px] text-danger">PHASE 1</div>
+                <div className=" text-[10px] text-danger">PHASE 1</div>
                 <div className="text-sm text-cream">TRD · 25 kV AC OHE power block isolation</div>
               </li>
               <li className="relative pl-5">
                 <span className="absolute -left-[5px] top-1 size-2.5 rounded-full bg-signal text-signal lamp" />
-                <div className="font-mono text-[10px] text-signal">PHASE 2</div>
+                <div className=" text-[10px] text-signal">PHASE 2</div>
                 <div className="text-sm text-cream">
                   Engineering · tamping, rail renewal, joint inspection
                 </div>
               </li>
               <li className="relative pl-5">
                 <span className="absolute -left-[5px] top-1 size-2.5 rounded-full bg-steel" />
-                <div className="font-mono text-[10px] text-steel">PHASE 3</div>
+                <div className=" text-[10px] text-steel">PHASE 3</div>
                 <div className="text-sm text-cream">
                   S&amp;T · point machine testing &amp; interlocking
                 </div>
               </li>
               <li className="relative pl-5">
                 <span className="absolute -left-[5px] top-1 size-2.5 rounded-full bg-clear text-clear" />
-                <div className="font-mono text-[10px] text-clear">PHASE 4</div>
+                <div className=" text-[10px] text-clear">PHASE 4</div>
                 <div className="text-sm text-cream">TRD · re-energize OHE, line handed back</div>
               </li>
             </ol>
           </div>
 
           <div className="border-t border-line bg-ink/60 px-4 py-3">
-            <div className="mb-2 font-mono text-[10px] tracking-[0.2em] text-steel">EXPLORE</div>
-            <div className="grid grid-cols-2 gap-2 font-mono text-[11px]">
+            <div className="mb-2  text-[10px] tracking-[0.2em] text-steel">EXPLORE</div>
+            <div className="grid grid-cols-2 gap-2  text-[11px]">
               <Link
                 to="/schedule"
                 className="rounded-md bg-ink3/60 p-2.5 hairline transition hover:bg-ink3"

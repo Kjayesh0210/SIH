@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useState, type ReactNode } from "react";
 import { backendHealthQuery, healthQuery } from "@/lib/queries";
@@ -8,25 +8,95 @@ import { PERSONAS, usePersona } from "@/lib/persona";
 import { useStation } from "@/lib/station-context";
 import { StationSwitcherModal } from "@/components/station-switcher-modal";
 import { EmailInboxModal } from "@/components/email-inbox-modal";
-import { MapPin, Mail, ChevronDown } from "lucide-react";
+import {
+  LayoutDashboard,
+  CalendarRange,
+  ListFilter,
+  Boxes,
+  TriangleAlert,
+  Map,
+  TrainFront,
+  Bot,
+  Database,
+  Info,
+  ChevronDown,
+  MapPin,
+  Mail,
+} from "lucide-react";
 
-const NAV = [
-  { to: "/dashboard", label: "/ DASHBOARD" },
-  { to: "/schedule", label: "/ SCHEDULE" },
-  { to: "/priority", label: "/ PRIORITY" },
-  { to: "/assets", label: "/ ASSETS" },
-  { to: "/risks", label: "/ RISKS" },
-  { to: "/map", label: "/ MAP" },
-  { to: "/impact", label: "/ IMPACT" },
-  { to: "/assistant", label: "/ ASSISTANT" },
-  { to: "/data", label: "/ DATA" },
-  { to: "/about", label: "/ ABOUT" },
+const NAV_GROUPS = [
+  {
+    label: "MAIN",
+    items: [
+      {
+        to: "/dashboard",
+        label: "Dashboard",
+        icon: LayoutDashboard,
+      },
+    ],
+  },
+  {
+    label: "PLANNING",
+    items: [
+      {
+        to: "/schedule",
+        label: "Schedule",
+        icon: CalendarRange,
+      },
+      {
+        to: "/priority",
+        label: "Priority",
+        icon: ListFilter,
+      },
+    ],
+  },
+  {
+    label: "OPERATIONS",
+    items: [
+      {
+        to: "/assets",
+        label: "Assets",
+        icon: Boxes,
+      },
+      {
+        to: "/risks",
+        label: "Risks",
+        icon: TriangleAlert,
+      },
+      {
+        to: "/map",
+        label: "Map",
+        icon: Map,
+      },
+      {
+        to: "/impact",
+        label: "Impact",
+        icon: TrainFront,
+      },
+    ],
+  },
+  {
+    label: "TOOLS",
+    items: [
+      {
+        to: "/assistant",
+        label: "Assistant",
+        icon: Bot,
+      },
+      {
+        to: "/data",
+        label: "Data",
+        icon: Database,
+      },
+      {
+        to: "/about",
+        label: "About",
+        icon: Info,
+      },
+    ],
+  },
 ] as const;
 
-/**
- * Demo persona switcher (plan item C) — see lib/persona.ts. No page is
- * gated by this; it's a narrative aid, not auth.
- */
 function PersonaPicker() {
   const { persona, setPersona } = usePersona();
 
@@ -34,8 +104,8 @@ function PersonaPicker() {
     <select
       value={persona.id}
       onChange={(e) => setPersona(e.target.value as (typeof PERSONAS)[number]["id"])}
-      className="rounded border border-line bg-ink3 px-2 py-1.5 font-mono text-[10px] text-cream"
-      title="Demo persona — changes what pages show by default, not a real login"
+      className="h-9 min-w-[190px] rounded-md border border-line bg-white px-3 text-[11px] text-cream outline-none transition hover:border-slate-300 focus:border-cream"
+      title="Demo persona"
     >
       {PERSONAS.map((p) => (
         <option key={p.id} value={p.id}>
@@ -54,19 +124,20 @@ export function EngineOfflineBanner() {
   const backend = useQuery(backendHealthQuery);
   const engine = useEngineHealth();
 
-  // When Node itself is down every /ai call fails too, so report the root cause only.
   const message = backend.isError
     ? `BACKEND UNREACHABLE — nothing is answering at ${API_BASE_URL}. Start it with "npm run dev" in Backend/.`
     : engine.isError
       ? `AI ENGINE OFFLINE — ${(engine.error as Error)?.message ?? "ML service unavailable"}. Requests, what-if and plans need the Python engine.`
       : null;
+
   if (!message) return null;
 
   return (
-    <div className="border-b border-signal/40 bg-signal/15">
-      <div className="mx-auto flex max-w-[1440px] items-center gap-3 px-6 py-2">
+    <div className="border-b border-signal/30 bg-amber-50">
+      <div className="flex items-center gap-3 px-6 py-2">
         <Lamp tone="danger" />
-        <span className="font-mono text-[11px] tracking-wide text-signal">{message}</span>
+
+        <span className="text-[11px] tracking-wide text-signal">{message}</span>
       </div>
     </div>
   );
@@ -84,140 +155,206 @@ function StatusLamp({
   text: string;
 }) {
   return (
-    <span className="flex items-center gap-2">
-      <span className="hidden text-steel sm:inline">{label}</span>
+    <div className="flex items-center gap-2">
+      <span className="text-[10px] uppercase tracking-[0.14em] text-steel">{label}</span>
+
       <Lamp tone={isError ? "danger" : isLoading ? "signal" : "clear"} />
-      <span className={isError ? "text-danger" : "text-clear"}>
+
+      <span className={isError ? "text-[10px] text-danger" : "text-[10px] text-clear"}>
         {isError ? "DOWN" : isLoading ? "…" : text}
       </span>
-    </span>
+    </div>
+  );
+}
+
+function TopUtilityBar({ onStationClick }: { onStationClick: () => void }) {
+  const backend = useQuery(backendHealthQuery);
+  const engine = useEngineHealth();
+
+  const { userProfile, unreadCount, setIsInboxOpen, activeStation } = useStation();
+
+  return (
+    <div className="border-b border-line bg-white">
+      <div className="flex h-14 items-center gap-6 px-6">
+        <button
+          onClick={onStationClick}
+          className="flex items-center gap-2 rounded-md border border-line bg-white px-3 py-2 text-[10px] text-cream transition hover:border-slate-300 hover:bg-slate-50"
+          title="Switch station"
+        >
+          <MapPin className="size-3.5 text-signal" />
+
+          <span className="font-bold text-signal">{activeStation.code}</span>
+
+          <span className="hidden text-steel md:inline">{activeStation.name}</span>
+
+          <ChevronDown className="size-3 text-steel" />
+        </button>
+
+        <div className="h-7 w-px bg-line" />
+
+        <button
+          onClick={() => setIsInboxOpen(true)}
+          className="flex items-center gap-3 rounded-md px-2 py-1.5 transition hover:bg-slate-50"
+          title={`Logged in as ${userProfile.email}`}
+        >
+          <Mail className="size-4 text-steel" />
+
+          <div className="text-left">
+            <div className="text-[9px] uppercase tracking-[0.14em] text-steel">
+              Engineer Mailbox
+            </div>
+
+            <div className="mt-0.5 max-w-[190px] truncate text-[10px] text-cream">
+              {userProfile.email}
+            </div>
+          </div>
+
+          {unreadCount > 0 ? (
+            <span className="flex size-4 items-center justify-center rounded-full bg-danger text-[9px] font-bold text-white">
+              {unreadCount}
+            </span>
+          ) : null}
+        </button>
+
+        <div className="h-7 w-px bg-line" />
+
+        <div className="flex items-center gap-3">
+          <span className="text-[9px] uppercase tracking-[0.14em] text-steel">
+            Operating Persona
+          </span>
+
+          <PersonaPicker />
+        </div>
+
+        <div className="h-7 w-px bg-line" />
+
+        <StatusLamp label="API" isError={backend.isError} isLoading={backend.isLoading} text="UP" />
+
+        <StatusLamp
+          label="ML Engine"
+          isError={engine.isError}
+          isLoading={engine.isLoading}
+          text={engine.data?.status ?? "UP"}
+        />
+      </div>
+    </div>
+  );
+}
+
+function Sidebar() {
+  return (
+    <aside className="fixed inset-y-0 left-0 z-30 hidden w-[260px] border-r border-line bg-white lg:block">
+      <div className="flex h-full flex-col">
+        <div className="border-b border-line px-6 py-5">
+          <Link to="/" className="flex items-center gap-3">
+            <span className="grid size-9 place-items-center rounded-md bg-cream font-display text-sm font-bold text-white">
+              S
+            </span>
+
+            <span className="leading-none">
+              <span className="block font-display text-sm font-semibold tracking-wide text-cream">
+                BLOCK-AI
+              </span>
+
+              <span className="mt-1.5 block text-[9px] tracking-[0.16em] text-steel">
+                AI BLOCK PLANNER
+              </span>
+            </span>
+          </Link>
+        </div>
+
+        <SidebarNavigation />
+
+        <div className="mt-auto border-t border-line px-6 py-4">
+          <div className="text-[9px] uppercase tracking-[0.14em] text-steel">
+            Railway Operations
+          </div>
+
+          <div className="mt-1 text-[10px] text-cream">Coordinated Block Planning</div>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+function SidebarNavigation() {
+  return (
+    <nav className="flex-1 overflow-y-auto px-3 py-5">
+      <div className="space-y-6">
+        {NAV_GROUPS.map((group) => (
+          <div key={group.label}>
+            <div className="px-3 pb-2 text-[9px] font-medium uppercase tracking-[0.18em] text-slate-400">
+              {group.label}
+            </div>
+
+            <div className="space-y-0.5 px-5">
+              {group.items.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <Link
+                    key={item.to}
+                    to={item.to}
+                    className="flex items-center gap-3 rounded-md px-3 py-2.5 text-[11px] text-steel transition hover:bg-slate-50 hover:text-cream"
+                    activeProps={{
+                      className:
+                        "flex items-center gap-3 rounded-md px-3 py-2.5 text-[11px] bg-slate-100 text-cream",
+                    }}
+                  >
+                    <Icon className="size-4" />
+
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+      </div>
+    </nav>
   );
 }
 
 export function SiteShell({ children }: { children: ReactNode }) {
-  const backend = useQuery(backendHealthQuery);
-  const engine = useEngineHealth();
-  const { activeStation, userProfile, unreadCount, setIsInboxOpen } = useStation();
+  const { pathname } = useLocation();
   const [isStationModalOpen, setIsStationModalOpen] = useState(false);
 
+  const isMapPage = pathname === "/map";
+
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-ink text-cream">
-      <div className="dusk pointer-events-none absolute inset-x-0 top-0 h-[420px] opacity-90" />
-      <div className="vignette pointer-events-none absolute inset-x-0 top-0 h-[460px]" />
+    <div className="min-h-screen bg-white text-cream">
+      <Sidebar />
 
-      <header className="sticky top-0 z-20 border-b border-line/80 bg-ink/85 backdrop-blur">
-        <div className="mx-auto flex h-14 max-w-[1440px] items-center justify-between gap-4 px-6">
-          <div className="flex items-center gap-4">
-            <Link to="/" className="flex shrink-0 items-center gap-3">
-              <span className="chrome grid size-8 place-items-center rounded-md font-display text-sm font-bold">
-                S
+      <div className="lg:pl-[260px]">
+        <header className="sticky top-0 z-20 bg-white">
+          <TopUtilityBar onStationClick={() => setIsStationModalOpen(true)} />
+        </header>
+
+        <StationSwitcherModal
+          isOpen={isStationModalOpen}
+          onClose={() => setIsStationModalOpen(false)}
+        />
+
+        <EmailInboxModal />
+
+        <EngineOfflineBanner />
+
+        <main className="mx-auto max-w-[1440px] px-6 py-8">{children}</main>
+
+        {!isMapPage ? (
+          <footer className="border-t border-line/70">
+            <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-3 px-6 py-6 text-[10px] text-steel">
+              <span>
+                Model ensemble · LightGBM 50 · Temporal CNN 30 · Random Forest 20 · recall 0.85
               </span>
-              <span className="leading-none hidden sm:block">
-                <span className="block font-display text-sm font-semibold tracking-wide">
-                  BLOCK-AI
-                </span>
-                <span className="block font-mono text-[10px] tracking-[0.2em] text-steel">
-                  AI BLOCK PLANNER
-                </span>
+
+              <span>
+                Railway AI Block Planner · Smart India Hackathon prototype · simulated data
               </span>
-            </Link>
-
-            {/* Station Switcher Button */}
-            <button
-              onClick={() => setIsStationModalOpen(true)}
-              className="flex items-center gap-2 rounded-md border border-line bg-ink3/60 px-2.5 py-1.5 font-mono text-xs text-cream transition hover:border-signal/80 hover:bg-ink3"
-              title="Click to switch Indian Railways station"
-            >
-              <MapPin className="size-3.5 text-signal" />
-              <span className="font-bold text-signal">{activeStation.code}</span>
-              <span className="text-steel hidden md:inline">· {activeStation.name}</span>
-              <span className="rounded bg-signal/15 px-1.5 py-0.2 text-[10px] text-signal font-semibold hidden lg:inline">
-                {activeStation.zone.split(" ")[0]} · {activeStation.division.split(" ")[0]}
-              </span>
-              <ChevronDown className="size-3 text-steel" />
-            </button>
-          </div>
-
-          <nav className="hidden items-center gap-0.5 font-mono text-[11px] text-steel 2xl:flex">
-            {NAV.map((item) => (
-              <Link
-                key={item.to}
-                to={item.to}
-                className="rounded px-2.5 py-2 transition hover:text-cream"
-                activeProps={{ className: "rounded px-2.5 py-2 bg-ink3 text-cream" }}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="flex shrink-0 items-center gap-3 font-mono text-[11px]">
-            {/* Engineer Mailbox Button */}
-            <button
-              onClick={() => setIsInboxOpen(true)}
-              className="relative flex items-center gap-2 rounded-md border border-line bg-ink3/40 px-3 py-1.5 text-xs text-cream hover:border-signal/70 hover:bg-ink3 transition"
-              title={`Logged in as ${userProfile.email}`}
-            >
-              <Mail className="size-3.5 text-signal" />
-              <span className="hidden sm:inline font-mono text-[11px] text-steel max-w-[140px] truncate">
-                {userProfile.email.split("@")[0]}
-              </span>
-              {unreadCount > 0 ? (
-                <span className="flex size-4 items-center justify-center rounded-full bg-danger text-[9px] font-bold text-white animate-pulse">
-                  {unreadCount}
-                </span>
-              ) : null}
-            </button>
-
-            <PersonaPicker />
-            <StatusLamp
-              label="API"
-              isError={backend.isError}
-              isLoading={backend.isLoading}
-              text="UP"
-            />
-            <StatusLamp
-              label="ML ENGINE"
-              isError={engine.isError}
-              isLoading={engine.isLoading}
-              text={engine.data?.status ?? "UP"}
-            />
-          </div>
-        </div>
-
-        <nav className="flex flex-wrap gap-1 border-t border-line/60 px-4 py-2 font-mono text-[10px] text-steel 2xl:hidden">
-          {NAV.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className="rounded px-2 py-1"
-              activeProps={{ className: "rounded px-2 py-1 bg-ink3 text-cream" }}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-      </header>
-
-      <StationSwitcherModal
-        isOpen={isStationModalOpen}
-        onClose={() => setIsStationModalOpen(false)}
-      />
-
-      <EmailInboxModal />
-
-      <EngineOfflineBanner />
-
-      <main className="relative z-10 mx-auto max-w-[1440px] px-6 py-8">{children}</main>
-
-      <footer className="relative z-10 mt-8 border-t border-line/70">
-        <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-between gap-3 px-6 py-6 font-mono text-[10px] text-steel">
-          <span>
-            Model ensemble · LightGBM 50 · Temporal CNN 30 · Random Forest 20 · recall 0.85
-          </span>
-          <span>Railway AI Block Planner · Smart India Hackathon prototype · simulated data</span>
-        </div>
-      </footer>
+            </div>
+          </footer>
+        ) : null}
+      </div>
     </div>
   );
 }

@@ -35,7 +35,7 @@ function RequestDetail() {
 
   return (
     <div className="space-y-6">
-      <Link to="/dashboard" className="font-mono text-[11px] text-steel hover:text-cream">
+      <Link to="/dashboard" className=" text-[11px] text-steel hover:text-cream">
         ← ALL REQUESTS
       </Link>
       <AsyncBlock isLoading={isLoading} error={error} data={data} loadingLabel="Loading request…">
@@ -100,7 +100,7 @@ function RequestView({ request: r }: { request: BlockRequest }) {
                       )}
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className="font-mono text-[10px] tracking-widest text-steel">
+                        <span className=" text-[10px] tracking-widest text-steel">
                           {id.replace(/_/g, " ")}
                         </span>
                         {selected ? <Tag tone="signal">Selected</Tag> : null}
@@ -108,7 +108,7 @@ function RequestView({ request: r }: { request: BlockRequest }) {
                       <div className="mt-2 font-display text-2xl text-cream">
                         {w.startTime}–{w.endTime}
                       </div>
-                      <div className="font-mono text-[11px] text-steel">
+                      <div className=" text-[11px] text-steel">
                         {w.date} · {fmtNum(w.durationHours)} h
                       </div>
                       <div className="mt-3 grid grid-cols-2 gap-2">
@@ -143,7 +143,7 @@ function RequestView({ request: r }: { request: BlockRequest }) {
                 })}
               </div>
             ) : (
-              <p className="font-mono text-[11px] text-steel">The engine returned no windows.</p>
+              <p className=" text-[11px] text-steel">The engine returned no windows.</p>
             )}
             {selectWindow.error ? (
               <div className="mt-3">
@@ -171,7 +171,7 @@ function RequestView({ request: r }: { request: BlockRequest }) {
                 {d.interDepartmentSequencing.map((step, i) => (
                   <li key={i} className="relative pl-5">
                     <span className="absolute -left-[5px] top-1 size-2.5 rounded-full bg-signal" />
-                    <div className="font-mono text-[10px] text-signal">
+                    <div className=" text-[10px] text-signal">
                       PHASE {step.phase ?? i + 1} · {step.timeWindow}
                     </div>
                     <div className="text-sm text-cream">
@@ -234,7 +234,7 @@ function RequestView({ request: r }: { request: BlockRequest }) {
                   <Link
                     to="/risks/$assetId"
                     params={{ assetId: r.assetRisk.asset_id }}
-                    className="font-mono text-sm text-signal hover:underline"
+                    className=" text-sm text-signal hover:underline"
                   >
                     {r.assetRisk.asset_id}
                   </Link>
@@ -249,7 +249,7 @@ function RequestView({ request: r }: { request: BlockRequest }) {
                 ) : null}
               </div>
             ) : (
-              <p className="font-mono text-[11px] text-steel">No asset linked to this request.</p>
+              <p className=" text-[11px] text-steel">No asset linked to this request.</p>
             )}
           </Panel>
 
@@ -262,10 +262,10 @@ function RequestView({ request: r }: { request: BlockRequest }) {
               <ol className="space-y-3">
                 {r.auditTrail.map((a, i) => (
                   <li key={i} className="border-l border-line pl-3">
-                    <div className="font-mono text-[11px] uppercase text-cream">
+                    <div className=" text-[11px] uppercase text-cream">
                       {a.action?.replace(/_/g, " ")}
                     </div>
-                    <div className="font-mono text-[10px] text-steel">
+                    <div className=" text-[10px] text-steel">
                       {fmtDateTime(a.at)} · {a.by ?? "system"}
                     </div>
                     {a.note ? <div className="text-xs text-steel">{a.note}</div> : null}
@@ -273,7 +273,7 @@ function RequestView({ request: r }: { request: BlockRequest }) {
                 ))}
               </ol>
             ) : (
-              <p className="font-mono text-[11px] text-steel">No entries.</p>
+              <p className=" text-[11px] text-steel">No entries.</p>
             )}
           </Panel>
         </div>

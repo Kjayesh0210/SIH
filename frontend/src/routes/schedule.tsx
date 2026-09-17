@@ -153,7 +153,7 @@ function Schedule() {
                 </button>
               ))}
             </div>
-            <p className="mt-2 font-mono text-[10px] text-steel">
+            <p className="mt-2  text-[10px] text-steel">
               {HORIZONS.find((h) => h.id === horizon)?.hint}
             </p>
           </div>
@@ -171,7 +171,7 @@ function Schedule() {
       <Panel
         title={rangeLabel}
         right={
-          <div className="flex items-center gap-2 font-mono text-[10px] text-steel">
+          <div className="flex items-center gap-2  text-[10px] text-steel">
             <span>
               {jobCount} JOB{jobCount === 1 ? "" : "S"} · {blockCount} BLOCK
               {blockCount === 1 ? "" : "S"} · {totalHours}H
@@ -198,7 +198,7 @@ function Schedule() {
                   ? "Nothing due in these seven days"
                   : "Nothing due this month"}
             </div>
-            <p className="mt-1 font-mono text-[11px] text-steel">
+            <p className="mt-1  text-[11px] text-steel">
               Raise a request and the allotted nights appear here.
             </p>
           </div>
@@ -222,7 +222,7 @@ function Schedule() {
                       {weekdayName(date)} {prettyDate(date)}
                     </span>
                     {isToday ? <Tag tone="signal">TODAY</Tag> : null}
-                    <span className="font-mono text-[10px] text-steel">
+                    <span className=" text-[10px] text-steel">
                       {dayBlocks.length} block{dayBlocks.length > 1 ? "s" : ""} ·{" "}
                       {dayBlocks.reduce((s, b) => s + b.hours, 0)}h
                     </span>
@@ -232,7 +232,7 @@ function Schedule() {
                     {dayBlocks.map((b) => (
                       <div
                         key={b.blockId}
-                        className="flex flex-wrap items-center justify-between gap-2 rounded border border-line/60 bg-ink2 px-3 py-2 font-mono text-[11px]"
+                        className="flex flex-wrap items-center justify-between gap-2 rounded border border-line/60 bg-ink2 px-3 py-2  text-[11px]"
                       >
                         <div className="flex flex-wrap items-center gap-2">
                           <span className="text-signal">{b.blockId}</span>

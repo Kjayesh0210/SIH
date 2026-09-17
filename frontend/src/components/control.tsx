@@ -19,10 +19,10 @@ export function Panel({
     <section className={cn("rounded-lg hairline overflow-hidden bg-ink2/80", className)}>
       {title ? (
         <header className="flex items-center justify-between gap-3 px-4 py-2.5 border-b border-line bg-ink3/60">
-          <span className="font-mono text-[11px] tracking-[0.2em] uppercase text-steel">
+          <span className=" text-[11px] tracking-[0.2em] uppercase text-steel">
             {title}
           </span>
-          {right ? <span className="font-mono text-[10px] text-signal">{right}</span> : null}
+          {right ? <span className=" text-[10px] text-signal">{right}</span> : null}
         </header>
       ) : null}
       <div className={cn("p-4", bodyClassName)}>{children}</div>
@@ -44,7 +44,7 @@ export function Meta({
       <div className="label-mono tracking-widest">{label}</div>
       <div
         className={cn(
-          "mt-1 font-mono text-sm text-cream",
+          "mt-1  text-sm text-cream",
           tone === "signal" && "text-signal",
           tone === "clear" && "text-clear",
           tone === "danger" && "text-danger",
@@ -66,7 +66,7 @@ export function Tag({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded border border-line bg-ink3 px-2 py-1 font-mono text-[10px] uppercase tracking-wide",
+        "inline-flex items-center gap-1.5 rounded border border-line bg-ink3 px-2 py-1  text-[10px] uppercase tracking-wide",
         tone === "neutral" && "text-cream",
         tone === "signal" && "text-signalsoft",
         tone === "clear" && "text-clear",
@@ -130,12 +130,11 @@ export function Lamp({
 }
 
 export function PageHeader({
-  eyebrow,
   title,
   intro,
   actions,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   intro?: string | undefined;
   actions?: ReactNode;
@@ -143,17 +142,15 @@ export function PageHeader({
   return (
     <div className="rise flex flex-wrap items-end justify-between gap-4">
       <div>
-        <div className="inline-flex items-center gap-2 rounded border border-signal/40 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.25em] text-signal">
-          <Lamp tone="signal" />
-          {eyebrow}
-        </div>
-        <h1 className="mt-3 font-display text-3xl font-semibold uppercase leading-none tracking-tight text-cream">
+        <h1 className="font-display text-3xl font-semibold leading-none tracking-tight text-cream">
           {title}
         </h1>
+
         {intro ? (
           <p className="mt-3 max-w-[70ch] text-sm leading-relaxed text-steel">{intro}</p>
         ) : null}
       </div>
+
       {actions ? <div className="flex flex-wrap gap-3">{actions}</div> : null}
     </div>
   );
@@ -208,7 +205,7 @@ export function GhostButton({
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "rounded-md border px-4 py-2.5 font-mono text-[11px] uppercase tracking-wide transition disabled:cursor-not-allowed disabled:opacity-40",
+        "rounded-md border px-4 py-2.5  text-[11px] uppercase tracking-wide transition disabled:cursor-not-allowed disabled:opacity-40",
         tone === "neutral" && "border-line text-cream hover:bg-ink3",
         tone === "danger" && "border-danger/50 text-danger hover:bg-danger/10",
         className,
@@ -235,15 +232,15 @@ export function Field({
       <span className="label-mono block tracking-widest">{label}</span>
       <div className="mt-1.5">{children}</div>
       {hint && !error ? (
-        <span className="mt-1 block font-mono text-[10px] text-steel/70">{hint}</span>
+        <span className="mt-1 block  text-[10px] text-steel/70">{hint}</span>
       ) : null}
-      {error ? <span className="mt-1 block font-mono text-[10px] text-danger">{error}</span> : null}
+      {error ? <span className="mt-1 block  text-[10px] text-danger">{error}</span> : null}
     </label>
   );
 }
 
 const controlClasses =
-  "w-full rounded-md border border-line bg-ink3/60 px-3 py-2 font-mono text-[12px] text-cream outline-none transition placeholder:text-steel/50 focus:border-signal/60";
+  "w-full rounded-md border border-line bg-ink3/60 px-3 py-2  text-[12px] text-cream outline-none transition placeholder:text-steel/50 focus:border-signal/60";
 
 export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input {...props} className={cn(controlClasses, props.className)} />;
@@ -259,7 +256,7 @@ export function SelectInput(props: React.SelectHTMLAttributes<HTMLSelectElement>
 
 export function Loading({ label = "Working…" }: { label?: string | undefined }) {
   return (
-    <div className="flex items-center gap-2 py-6 font-mono text-[11px] uppercase tracking-[0.2em] text-steel">
+    <div className="flex items-center gap-2 py-6  text-[11px] uppercase tracking-[0.2em] text-steel">
       <Lamp tone="signal" />
       {label}
     </div>
@@ -270,7 +267,7 @@ export function EmptyState({ title, hint }: { title: string; hint?: string | und
   return (
     <div className="rounded-md border border-dashed border-line px-4 py-8 text-center">
       <p className="font-display text-sm uppercase tracking-wide text-cream">{title}</p>
-      {hint ? <p className="mt-1.5 font-mono text-[11px] text-steel">{hint}</p> : null}
+      {hint ? <p className="mt-1.5  text-[11px] text-steel">{hint}</p> : null}
     </div>
   );
 }
@@ -279,12 +276,12 @@ export function ErrorNote({ error, title }: { error: unknown; title?: string | u
   const messages = errorMessages(error);
   return (
     <div className="rounded-md border border-danger/50 bg-danger/10 px-3 py-2.5">
-      <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-danger">
+      <p className=" text-[10px] uppercase tracking-[0.2em] text-danger">
         {title ?? "Error"}
       </p>
       <ul className="mt-1.5 space-y-1">
         {messages.map((m, i) => (
-          <li key={i} className="font-mono text-[11px] text-cream">
+          <li key={i} className=" text-[11px] text-cream">
             {m}
           </li>
         ))}
@@ -295,7 +292,7 @@ export function ErrorNote({ error, title }: { error: unknown; title?: string | u
 
 export function Disclaimer({ text }: { text?: string | undefined }) {
   return (
-    <p className="font-mono text-[10px] leading-relaxed text-steel/70">
+    <p className=" text-[10px] leading-relaxed text-steel/70">
       {text ?? "Prototype — heuristic optimizer, simulated corridor data."}
     </p>
   );
@@ -325,7 +322,7 @@ export function Stat({
       >
         {value}
       </div>
-      {sub ? <div className="mt-2 font-mono text-[10px] text-steel">{sub}</div> : null}
+      {sub ? <div className="mt-2  text-[10px] text-steel">{sub}</div> : null}
     </div>
   );
 }
@@ -333,7 +330,7 @@ export function Stat({
 export function DataTable({ head, children }: { head: ReactNode[]; children: ReactNode }) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full border-collapse text-left font-mono text-[11px]">
+      <table className="w-full border-collapse text-left  text-[11px]">
         <thead>
           <tr>
             {head.map((h, i) => (
@@ -367,7 +364,7 @@ export function Pager({
 }) {
   const pages = Math.max(totalPages, 1);
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 pt-4 font-mono text-[11px] text-steel">
+    <div className="flex flex-wrap items-center justify-between gap-3 pt-4  text-[11px] text-steel">
       <span>
         {total !== undefined ? `${total.toLocaleString("en-IN")} records · ` : ""}page {page} /{" "}
         {pages}
@@ -456,7 +453,7 @@ export function Checkbox({
   label: ReactNode;
 }) {
   return (
-    <label className="flex cursor-pointer items-center gap-2 font-mono text-[11px] text-cream">
+    <label className="flex cursor-pointer items-center gap-2  text-[11px] text-cream">
       <input
         type="checkbox"
         checked={checked}
@@ -481,7 +478,7 @@ export function KeyValueGrid({ data }: { data: Record<string, unknown> | undefin
           <dt className="label-mono tracking-widest">
             {k.replace(/([A-Z])/g, " $1").replace(/_/g, " ")}
           </dt>
-          <dd className="mt-1 font-mono text-[12px] text-cream">{String(v)}</dd>
+          <dd className="mt-1  text-[12px] text-cream">{String(v)}</dd>
         </div>
       ))}
     </dl>

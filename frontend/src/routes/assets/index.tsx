@@ -87,7 +87,7 @@ function Assets() {
           </ChromeButton>
           <Link
             to="/risks"
-            className="rounded-md border border-line px-4 py-2.5 font-mono text-[11px] uppercase text-cream transition hover:bg-ink3"
+            className="rounded-md border border-line px-4 py-2.5  text-[11px] uppercase text-cream transition hover:bg-ink3"
           >
             Browse by risk
           </Link>
@@ -202,7 +202,7 @@ function Assets() {
                     />
                   </>
                 ) : (
-                  <p className="font-mono text-[11px] text-steel">No assets match these filters.</p>
+                  <p className=" text-[11px] text-steel">No assets match these filters.</p>
                 )
               }
             </AsyncBlock>

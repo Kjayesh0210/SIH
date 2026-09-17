@@ -94,7 +94,7 @@ function StationLens() {
   return (
     <Panel
       title="Database Asset Station Lens"
-      right={<span className="font-mono text-[10px] text-steel">DATABASE ASSETS SNAPSHOT</span>}
+      right={<span className=" text-[10px] text-steel">DATABASE ASSETS SNAPSHOT</span>}
     >
       <div className="relative max-w-sm">
         <TextInput
@@ -108,13 +108,13 @@ function StationLens() {
         {showDropdown ? (
           <div className="absolute z-10 mt-1 w-full rounded-md border border-line bg-ink2 shadow-lg">
             {search.isLoading ? (
-              <div className="px-3 py-2 font-mono text-[11px] text-steel">Searching…</div>
+              <div className="px-3 py-2  text-[11px] text-steel">Searching…</div>
             ) : search.data?.length ? (
               search.data.map((s) => (
                 <button
                   key={s.code}
                   type="button"
-                  className="block w-full px-3 py-2 text-left font-mono text-[11px] text-cream hover:bg-ink3"
+                  className="block w-full px-3 py-2 text-left  text-[11px] text-cream hover:bg-ink3"
                   onClick={() => {
                     setSelected({ code: s.code, name: s.name });
                     setQuery("");
@@ -125,7 +125,7 @@ function StationLens() {
                 </button>
               ))
             ) : (
-              <div className="px-3 py-2 font-mono text-[11px] text-steel">No station matches.</div>
+              <div className="px-3 py-2  text-[11px] text-steel">No station matches.</div>
             )}
           </div>
         ) : null}
@@ -192,7 +192,7 @@ function StationLens() {
           </AsyncBlock>
         </div>
       ) : (
-        <p className="mt-3 font-mono text-[11px] text-steel">
+        <p className="mt-3  text-[11px] text-steel">
           Search a station to inspect its raw imported assets, risk levels and maintenance logs.
         </p>
       )}
@@ -319,7 +319,7 @@ function TaskCard({
             <ChevronDown
               className={`size-3.5 text-steel transition ${expanded ? "rotate-180" : ""}`}
             />
-            <span className="font-mono text-xs font-bold text-signal">{item.ref}</span>
+            <span className=" text-xs font-bold text-signal">{item.ref}</span>
             <span className="font-display text-base font-semibold text-cream">{item.title}</span>
             <Tag
               tone={
@@ -338,7 +338,7 @@ function TaskCard({
             ) : null}
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 pl-6 font-mono text-[11px] text-steel">
+          <div className="flex flex-wrap items-center gap-3 pl-6  text-[11px] text-steel">
             <span>Dept: {item.department}</span>
             {item.fromKm !== undefined && item.toKm !== undefined ? (
               <>
@@ -387,7 +387,7 @@ function TaskCard({
       </button>
 
       {isDisrupted && task?.disruption && (
-        <div className="mx-4 mb-4 space-y-1 rounded border border-danger/40 bg-ink p-3 font-mono text-xs">
+        <div className="mx-4 mb-4 space-y-1 rounded border border-danger/40 bg-ink p-3  text-xs">
           <div className="flex items-center gap-2 font-semibold text-danger">
             <AlertTriangle className="size-4" />
             <span>
@@ -411,7 +411,7 @@ function TaskCard({
             {item.sessions.slice(0, 10).map((s) => (
               <div
                 key={s.blockId}
-                className="flex flex-wrap items-center justify-between gap-2 rounded border border-line/60 bg-ink2 px-3 py-1.5 font-mono text-[10px]"
+                className="flex flex-wrap items-center justify-between gap-2 rounded border border-line/60 bg-ink2 px-3 py-1.5  text-[10px]"
               >
                 <span className="text-signal">{s.blockId}</span>
                 <span className="text-cream">
@@ -423,7 +423,7 @@ function TaskCard({
               </div>
             ))}
             {item.sessions.length > 10 ? (
-              <p className="font-mono text-[10px] text-steel">
+              <p className=" text-[10px] text-steel">
                 + {item.sessions.length - 10} more blocks.
               </p>
             ) : null}
@@ -434,7 +434,7 @@ function TaskCard({
       {expanded && (
         <div className="border-t border-line/60 px-4 py-3">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <div className="font-mono text-[11px] text-steel">
+            <div className=" text-[11px] text-steel">
               {overdue
                 ? "This block passed its planned date without being closed out."
                 : "Close this out once the work is physically finished on site."}
@@ -455,7 +455,7 @@ function TaskCard({
               {isScheduled && item.source === "station" && (
                 <GhostButton
                   onClick={onSimulate}
-                  className="border border-danger/30 px-2.5 py-1 font-mono text-[11px] text-danger hover:bg-danger/15"
+                  className="border border-danger/30 px-2.5 py-1  text-[11px] text-danger hover:bg-danger/15"
                 >
                   Simulate train delay (+35m)
                 </GhostButton>
@@ -494,13 +494,13 @@ function SlotPicker({
         <div className="font-display text-sm font-semibold uppercase text-cream">
           Pick a new window — {task.id}
         </div>
-        <GhostButton onClick={onCancel} className="px-2 py-1 font-mono text-[11px]">
+        <GhostButton onClick={onCancel} className="px-2 py-1  text-[11px]">
           Cancel
         </GhostButton>
       </div>
 
       {slots.length === 0 ? (
-        <p className="mt-3 font-mono text-[11px] text-steel">
+        <p className="mt-3  text-[11px] text-steel">
           Every alternative has been used. Raise a fresh request for this work.
         </p>
       ) : (
@@ -515,7 +515,7 @@ function SlotPicker({
               <div className="font-display text-sm font-semibold text-cream">
                 {dayLabel(slot.date)} · {ampm(slot.startTime)} – {ampm(slot.endTime)}
               </div>
-              <div className="mt-1 font-mono text-[10px] text-steel">{slot.note}</div>
+              <div className="mt-1  text-[10px] text-steel">{slot.note}</div>
             </button>
           ))}
         </div>
@@ -600,7 +600,7 @@ function Dashboard() {
       <div className="rounded-xl border border-line bg-gradient-to-r from-ink2 via-ink2 to-ink3/40 p-6 hairline">
         <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-center">
           <div className="space-y-2">
-            <div className="flex flex-wrap items-center gap-2 font-mono text-[11px] text-steel">
+            <div className="flex flex-wrap items-center gap-2  text-[11px] text-steel">
               <span className="flex items-center gap-1 font-bold text-signal">
                 <MapPin className="size-3.5" />
                 {activeStation.zone}
@@ -608,14 +608,14 @@ function Dashboard() {
               <span>·</span>
               <span>{activeStation.division}</span>
               <span>·</span>
-              <span className="rounded bg-signal/20 px-2 py-0.5 font-mono text-xs font-bold text-signal">
+              <span className="rounded bg-signal/20 px-2 py-0.5  text-xs font-bold text-signal">
                 STATION CODE: {activeStation.code}
               </span>
             </div>
             <h1 className="font-display text-3xl font-bold uppercase tracking-tight text-cream">
               {activeStation.name} Station Dashboard
             </h1>
-            <div className="flex flex-wrap items-center gap-4 font-mono text-xs text-steel">
+            <div className="flex flex-wrap items-center gap-4  text-xs text-steel">
               <div>
                 Section: <span className="font-semibold text-cream">{activeStation.sectionId}</span>
               </div>
@@ -633,7 +633,7 @@ function Dashboard() {
           </div>
 
           <div className="flex flex-col items-start gap-3 sm:flex-row sm:items-center">
-            <div className="rounded-lg border border-line/80 bg-ink/70 px-4 py-2.5 font-mono text-xs">
+            <div className="rounded-lg border border-line/80 bg-ink/70 px-4 py-2.5  text-xs">
               <div className="text-[10px] font-semibold uppercase text-steel">Section Engineer</div>
               <div className="font-semibold text-cream">{userProfile.name}</div>
               <div className="max-w-[200px] truncate text-[11px] text-signal">
@@ -644,7 +644,7 @@ function Dashboard() {
             <button
               type="button"
               onClick={() => setIsInboxOpen(true)}
-              className="flex items-center gap-2 rounded-lg border border-signal/40 bg-signal/15 px-4 py-3 font-mono text-xs font-semibold text-signal transition hover:bg-signal/25"
+              className="flex items-center gap-2 rounded-lg border border-signal/40 bg-signal/15 px-4 py-3  text-xs font-semibold text-signal transition hover:bg-signal/25"
             >
               <Mail className="size-4" />
               <span>Official Mailbox</span>
@@ -686,13 +686,13 @@ function Dashboard() {
           <Panel
             title="Station Maintenance Tasks Workbench"
             right={
-              <span className="font-mono text-[10px] text-steel">
+              <span className=" text-[10px] text-steel">
                 {openItems.length} OPEN · {overdueCount} OVERDUE
               </span>
             }
           >
             <div className="space-y-4">
-              <p className="font-mono text-xs text-steel">
+              <p className=" text-xs text-steel">
                 Work logged for <strong className="text-cream">{activeStation.name}</strong> that is
                 still open, including block requests filed through the AI engine. Items stay here
                 until you mark them completed. The AI checks timetables, live delays and other
@@ -700,7 +700,7 @@ function Dashboard() {
               </p>
 
               {requests.isError ? (
-                <p className="font-mono text-[11px] text-danger">
+                <p className=" text-[11px] text-danger">
                   Filed block requests could not be loaded — showing station tasks only.
                 </p>
               ) : null}
@@ -708,7 +708,7 @@ function Dashboard() {
               {openItems.length === 0 ? (
                 <div className="rounded-lg border border-line bg-ink3/30 p-6 text-center">
                   <div className="font-display text-sm uppercase text-cream">Nothing open</div>
-                  <p className="mt-1 font-mono text-[11px] text-steel">
+                  <p className="mt-1  text-[11px] text-steel">
                     Every logged task for this station has been completed.
                   </p>
                 </div>
@@ -752,13 +752,13 @@ function Dashboard() {
           <Panel
             title="Live Train Telemetry"
             right={
-              <span className="flex items-center gap-1 font-mono text-[10px] text-clear">
+              <span className="flex items-center gap-1  text-[10px] text-clear">
                 <Radio className="size-3 animate-pulse" /> LIVE RTIS GPS
               </span>
             }
           >
             <div className="space-y-3">
-              <p className="font-mono text-[11px] text-steel">
+              <p className=" text-[11px] text-steel">
                 Trains passing through {activeStation.name} ({activeStation.code}). Only these
                 affect blocks held at this station.
               </p>
@@ -774,7 +774,7 @@ function Dashboard() {
                         </span>
                       </div>
                       <span
-                        className={`rounded px-1.5 py-0.5 font-mono text-[10px] font-bold ${
+                        className={`rounded px-1.5 py-0.5  text-[10px] font-bold ${
                           trn.liveDelayMinutes > 15
                             ? "border border-danger/30 bg-danger/15 text-danger"
                             : trn.liveDelayMinutes > 0
@@ -786,7 +786,7 @@ function Dashboard() {
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between font-mono text-[11px] text-steel">
+                    <div className="flex items-center justify-between  text-[11px] text-steel">
                       <span>
                         #{trn.number} ({trn.type})
                       </span>
@@ -806,8 +806,8 @@ function Dashboard() {
               <div className="flex items-start gap-3">
                 <Lamp tone={backend.isError ? "danger" : backend.isLoading ? "signal" : "clear"} />
                 <div>
-                  <div className="font-mono text-[11px] text-cream">NODE BACKEND</div>
-                  <div className="font-mono text-[10px] text-steel">
+                  <div className=" text-[11px] text-cream">NODE BACKEND</div>
+                  <div className=" text-[10px] text-steel">
                     {backend.isError ? "Unreachable" : (backend.data ?? "Checking…")}
                   </div>
                 </div>
@@ -815,8 +815,8 @@ function Dashboard() {
               <div className="flex items-start gap-3">
                 <Lamp tone={engine.isError ? "danger" : engine.isLoading ? "signal" : "clear"} />
                 <div>
-                  <div className="font-mono text-[11px] text-cream">PYTHON AI ENGINE</div>
-                  <div className="font-mono text-[10px] text-steel">
+                  <div className=" text-[11px] text-cream">PYTHON AI ENGINE</div>
+                  <div className=" text-[10px] text-steel">
                     {engine.isError
                       ? (engine.error?.message ?? "Offline")
                       : engine.data
@@ -851,13 +851,13 @@ function Dashboard() {
                     />
                   </div>
                 ) : (
-                  <p className="font-mono text-[11px] text-steel">
+                  <p className=" text-[11px] text-steel">
                     {kpis.isLoading ? "Loading…" : "KPIs unavailable."}
                   </p>
                 )}
                 <Link
                   to="/impact"
-                  className="mt-3 inline-block font-mono text-[10px] text-signal hover:underline"
+                  className="mt-3 inline-block  text-[10px] text-signal hover:underline"
                 >
                   FULL IMPACT REPORT →
                 </Link>

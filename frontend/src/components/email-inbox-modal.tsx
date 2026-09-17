@@ -62,7 +62,7 @@ export function EmailInboxModal() {
                   <Tag tone="danger">{unreadCount} New</Tag>
                 )}
               </div>
-              <div className="flex items-center gap-2 font-mono text-[11px] text-steel">
+              <div className="flex items-center gap-2  text-[11px] text-steel">
                 <span>Account:</span>
                 {isEditingEmail ? (
                   <div className="flex items-center gap-1">
@@ -70,7 +70,7 @@ export function EmailInboxModal() {
                       type="email"
                       value={emailInput}
                       onChange={(e) => setEmailInput(e.target.value)}
-                      className="rounded border border-line bg-ink px-2 py-0.5 font-mono text-xs text-cream outline-none focus:border-signal"
+                      className="rounded border border-line bg-ink px-2 py-0.5  text-xs text-cream outline-none focus:border-signal"
                     />
                     <button
                       onClick={handleSaveEmail}
@@ -119,7 +119,7 @@ export function EmailInboxModal() {
               <span className="label-mono">Incoming Railway AI Dispatches</span>
             </div>
             {notifications.length === 0 ? (
-              <div className="p-6 text-center font-mono text-xs text-steel">
+              <div className="p-6 text-center  text-xs text-steel">
                 Inbox is clear. No alerts dispatched.
               </div>
             ) : (
@@ -143,19 +143,19 @@ export function EmailInboxModal() {
                             <span className="size-2 rounded-full bg-signal animate-pulse" />
                           )}
                           <span
-                            className={`font-mono text-[10px] uppercase font-semibold ${
+                            className={` text-[10px] uppercase font-semibold ${
                               isDelay ? "text-danger" : "text-clear"
                             }`}
                           >
                             {isDelay ? "URGENT ALERT" : "SYSTEM NOTICE"}
                           </span>
                         </div>
-                        <span className="font-mono text-[10px] text-steel">{n.timestamp}</span>
+                        <span className=" text-[10px] text-steel">{n.timestamp}</span>
                       </div>
                       <div className="font-display text-sm font-medium leading-snug text-cream line-clamp-1">
                         {n.subject}
                       </div>
-                      <div className="font-mono text-[11px] text-steel line-clamp-1">
+                      <div className=" text-[11px] text-steel line-clamp-1">
                         Task: {n.taskTitle}
                       </div>
                     </button>
@@ -176,7 +176,7 @@ export function EmailInboxModal() {
                       <h2 className="font-display text-lg font-semibold uppercase text-cream">
                         {activeAlert.subject}
                       </h2>
-                      <div className="mt-2 space-y-1 font-mono text-xs text-steel">
+                      <div className="mt-2 space-y-1  text-xs text-steel">
                         <div>
                           <span className="text-steel/70">From:</span> {activeAlert.sender}
                         </div>
@@ -216,12 +216,12 @@ export function EmailInboxModal() {
                             </span>{" "}
                             due to upstream regulation. Its revised passage time overlaps with your
                             scheduled maintenance block window (
-                            <span className="font-mono text-cream">
+                            <span className=" text-cream">
                               {activeAlert.disruptedWindow}
                             </span>
                             ).
                           </p>
-                          <div className="font-mono text-[11px] text-steel pt-1">
+                          <div className=" text-[11px] text-steel pt-1">
                             Operational Directive: The line cannot be closed at the original time
                             without detaining passenger express traffic. AI has recomputed conflict-free
                             alternate slots below.
@@ -234,7 +234,7 @@ export function EmailInboxModal() {
                     {rescheduleSuccess && (
                       <div className="rounded-lg border border-clear/40 bg-clear/15 p-4 flex items-center gap-3">
                         <CheckCircle2 className="size-5 text-clear shrink-0" />
-                        <span className="font-mono text-xs text-clear font-semibold">
+                        <span className=" text-xs text-clear font-semibold">
                           {rescheduleSuccess}
                         </span>
                       </div>
@@ -246,7 +246,7 @@ export function EmailInboxModal() {
                         <span className="label-mono text-cream">
                           AI-Calculated Clean Alternative Timings:
                         </span>
-                        <span className="font-mono text-[10px] text-steel">
+                        <span className=" text-[10px] text-steel">
                           100% Zero Passenger Conflicts
                         </span>
                       </div>
@@ -293,13 +293,13 @@ export function EmailInboxModal() {
                           <div className="font-display text-sm font-semibold uppercase text-clear">
                             {activeAlert.taskTitle}
                           </div>
-                          <div className="font-mono text-xs text-cream mt-0.5">
+                          <div className=" text-xs text-cream mt-0.5">
                             Confirmed Window: {activeAlert.resolvedWindow}
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="rounded-lg border border-line bg-ink p-4 space-y-2 text-xs leading-relaxed text-steel font-mono">
+                    <div className="rounded-lg border border-line bg-ink p-4 space-y-2 text-xs leading-relaxed text-steel ">
                       <p>
                         The Indian Railways Autonomous Block Planner has registered and synchronized this
                         possession request across Engineering (P-Way), Signal & Telecommunication (S&T),
@@ -313,7 +313,7 @@ export function EmailInboxModal() {
                 )}
               </div>
             ) : (
-              <div className="m-auto text-center font-mono text-xs text-steel">
+              <div className="m-auto text-center  text-xs text-steel">
                 Select a message from the left to read.
               </div>
             )}

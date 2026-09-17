@@ -176,7 +176,7 @@ function BlockDetails() {
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
-                <h1 className="font-mono text-3xl font-bold tracking-tight text-slate-950">
+                <h1 className=" text-3xl font-bold tracking-tight text-slate-950">
                   {block.blockId}
                 </h1>
 
@@ -331,7 +331,7 @@ function BlockDetails() {
                         className="flex flex-col gap-2 rounded-xl border border-slate-200 bg-slate-50 p-4 sm:flex-row sm:items-center sm:justify-between"
                       >
                         <div>
-                          <span className="font-mono text-sm font-bold text-slate-900">
+                          <span className=" text-sm font-bold text-slate-900">
                             {task.taskId}
                           </span>
 
@@ -499,7 +499,7 @@ function BlockDetails() {
                     className="transition hover:bg-slate-50"
                   >
                     <td className="px-5 py-4">
-                      <span className="font-mono text-sm font-bold text-slate-900">
+                      <span className=" text-sm font-bold text-slate-900">
                         {task.taskId}
                       </span>
                     </td>
@@ -508,7 +508,7 @@ function BlockDetails() {
                       {task.assetId ? (
                         <Link
                           to={`/assets/${task.assetId}`}
-                          className="font-mono text-sm font-semibold text-indigo-600 transition hover:text-indigo-800 hover:underline"
+                          className=" text-sm font-semibold text-indigo-600 transition hover:text-indigo-800 hover:underline"
                         >
                           {task.assetId}
                         </Link>

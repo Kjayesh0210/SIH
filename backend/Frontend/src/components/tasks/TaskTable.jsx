@@ -46,7 +46,7 @@ function TaskTable({ tasks }) {
               <tr key={task.taskId} className="transition hover:bg-slate-50">
                 {/* Task ID */}
                 <td className="px-5 py-4">
-                  <span className="font-mono text-sm font-semibold text-slate-900">
+                  <span className=" text-sm font-semibold text-slate-900">
                     {task.taskId}
                   </span>
                 </td>
@@ -63,7 +63,7 @@ function TaskTable({ tasks }) {
                   {task.assetId ? (
                     <Link
                       to={`/assets/${task.assetId}`}
-                      className="font-mono text-sm font-semibold text-indigo-600 hover:text-indigo-800 hover:underline"
+                      className=" text-sm font-semibold text-indigo-600 hover:text-indigo-800 hover:underline"
                     >
                       {task.assetId}
                     </Link>

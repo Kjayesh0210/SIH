@@ -69,7 +69,7 @@ function Comparison({
       <div className="flex items-baseline justify-between gap-2">
         <span className="label-mono tracking-widest">{label}</span>
         {change !== null ? (
-          <span className={cn("font-mono text-[11px]", better ? "text-clear" : "text-danger")}>
+          <span className={cn(" text-[11px]", better ? "text-clear" : "text-danger")}>
             {change > 0 ? "+" : ""}
             {change}%
           </span>
@@ -84,14 +84,14 @@ function Comparison({
             key={row.name}
             className="grid grid-cols-[4.5rem_minmax(0,1fr)_4rem] items-center gap-2"
           >
-            <span className="font-mono text-[10px] uppercase text-steel">{row.name}</span>
+            <span className=" text-[10px] uppercase text-steel">{row.name}</span>
             <span className="h-2 overflow-hidden rounded-full bg-ink3">
               <span
                 className={cn("block h-full rounded-full", row.bar)}
                 style={{ width: `${((row.value ?? 0) / max) * 100}%` }}
               />
             </span>
-            <span className={cn("text-right font-mono text-[12px] tabular-nums", row.text)}>
+            <span className={cn("text-right  text-[12px] tabular-nums", row.text)}>
               {row.value ?? "—"}
               {unit}
             </span>

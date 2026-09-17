@@ -230,10 +230,10 @@ function OptionCard({
         </Tag>
       </div>
 
-      <div className="mt-2 font-mono text-[11px] text-steel">{option.note}</div>
-      <div className="mt-1 font-mono text-[10px] text-steel">{option.trafficNote}</div>
+      <div className="mt-2  text-[11px] text-steel">{option.note}</div>
+      <div className="mt-1  text-[10px] text-steel">{option.trafficNote}</div>
 
-      <div className="mt-3 flex flex-wrap gap-3 font-mono text-[10px] text-steel">
+      <div className="mt-3 flex flex-wrap gap-3  text-[10px] text-steel">
         <span>
           Blocks: <strong className="text-cream">{option.sessions.length}</strong>
         </span>
@@ -246,7 +246,7 @@ function OptionCard({
       </div>
 
       {option.forcesDelay ? (
-        <div className="mt-3 flex items-start gap-2 rounded border border-danger/40 bg-danger/10 p-2 font-mono text-[10px] text-danger">
+        <div className="mt-3 flex items-start gap-2 rounded border border-danger/40 bg-danger/10 p-2  text-[10px] text-danger">
           <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />
           <span>
             Too critical to split. Trains crossing this span will be regulated — the delay is
@@ -256,7 +256,7 @@ function OptionCard({
       ) : null}
 
       {option.overCapacity ? (
-        <div className="mt-3 flex items-start gap-2 rounded border border-danger/40 bg-danger/10 p-2 font-mono text-[10px] text-danger">
+        <div className="mt-3 flex items-start gap-2 rounded border border-danger/40 bg-danger/10 p-2  text-[10px] text-danger">
           <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />
           <span>Needs more night windows than a month holds. Consider splitting the km span.</span>
         </div>
@@ -274,7 +274,7 @@ function SessionList({ option }: { option: PlanOption }) {
       {shown.map((s) => (
         <div
           key={s.blockId}
-          className="flex flex-wrap items-center justify-between gap-2 rounded border border-line bg-ink3/40 px-3 py-2 font-mono text-[11px]"
+          className="flex flex-wrap items-center justify-between gap-2 rounded border border-line bg-ink3/40 px-3 py-2  text-[11px]"
         >
           <span className="text-signal">{s.blockId}</span>
           <span className="text-cream">
@@ -287,7 +287,7 @@ function SessionList({ option }: { option: PlanOption }) {
         </div>
       ))}
       {rest > 0 ? (
-        <p className="font-mono text-[10px] text-steel">
+        <p className=" text-[10px] text-steel">
           + {rest} more block{rest > 1 ? "s" : ""} in this plan.
         </p>
       ) : null}
@@ -683,7 +683,7 @@ function NewRequest() {
               Reset
             </GhostButton>
             {Object.keys(errors).length ? (
-              <span className="font-mono text-[11px] text-danger">Fix the highlighted fields.</span>
+              <span className=" text-[11px] text-danger">Fix the highlighted fields.</span>
             ) : null}
           </div>
         </Panel>
@@ -710,17 +710,17 @@ function NewRequest() {
         <Panel
           title="Free windows"
           right={
-            <span className="font-mono text-[10px] text-steel">
+            <span className=" text-[10px] text-steel">
               {plan.options.length} AVAILABLE · OCCUPIED SLOTS EXCLUDED
             </span>
           }
         >
           {planError ? (
-            <p className="mb-3 rounded border border-danger/40 bg-danger/10 p-2 font-mono text-[11px] text-danger">
+            <p className="mb-3 rounded border border-danger/40 bg-danger/10 p-2  text-[11px] text-danger">
               {planError}
             </p>
           ) : null}
-          <p className="mb-4 font-mono text-xs text-steel">
+          <p className="mb-4  text-xs text-steel">
             Only windows that are actually free are shown. A window already held by another block
             cannot take this work on top of it, so it is left out of this list entirely.
           </p>
@@ -740,7 +740,7 @@ function NewRequest() {
           <Panel
             title="Blocks in this plan"
             right={
-              <span className="font-mono text-[10px] text-steel">
+              <span className=" text-[10px] text-steel">
                 {chosen.sessions.length} BLOCK{chosen.sessions.length > 1 ? "S" : ""}
               </span>
             }
@@ -788,7 +788,7 @@ function NewRequest() {
 
         <div className="grid gap-6 xl:grid-cols-2">
           <Panel title="Submitted preferences">
-            <dl className="space-y-2 font-mono text-[11px]">
+            <dl className="space-y-2  text-[11px]">
               {[
                 ["Department", form.department],
                 ["Maintenance type", form.maintenanceType],
@@ -824,13 +824,13 @@ function NewRequest() {
                   <Clock className="size-5 text-signal" />
                   {chosen.windowLabel}
                 </div>
-                <div className="flex items-center gap-2 font-mono text-[11px] text-steel">
+                <div className="flex items-center gap-2  text-[11px] text-steel">
                   <CalendarDays className="size-3.5" />
                   {chosen.sessions.length === 1
                     ? `${weekdayName(first.date)} ${prettyDate(first.date)}`
                     : `${prettyDate(first.date)} → ${prettyDate(last.date)} · ${chosen.sessions.length} blocks`}
                 </div>
-                <p className="font-mono text-[11px] text-steel">{chosen.note}</p>
+                <p className=" text-[11px] text-steel">{chosen.note}</p>
                 <div className="flex flex-wrap gap-1.5">
                   <Tag tone="steel">{cadenceLabel[chosen.cadence]}</Tag>
                   <Tag tone="steel">{chosen.sessionHours}h per block</Tag>
@@ -840,7 +840,7 @@ function NewRequest() {
             </Panel>
 
             <Panel title="Safety protocols">
-              <ol className="list-decimal space-y-1.5 pl-4 font-mono text-[11px] text-steel">
+              <ol className="list-decimal space-y-1.5 pl-4  text-[11px] text-steel">
                 <li>Line block granted by the DRM and advised to adjacent station masters.</li>
                 <li>Banner flags and detonators placed at 600 m and 1200 m on both approaches.</li>
                 <li>

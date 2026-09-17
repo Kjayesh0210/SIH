@@ -29,7 +29,7 @@ function AssetDetail() {
 
   return (
     <div className="space-y-6">
-      <Link to="/assets" className="font-mono text-[11px] text-steel hover:text-cream">
+      <Link to="/assets" className=" text-[11px] text-steel hover:text-cream">
         ← ASSET REGISTER
       </Link>
       <AsyncBlock
@@ -85,7 +85,7 @@ function ConditionTrend({ inspections }: { inspections: AssetDetails["inspection
       <svg width={w} height={h} className={cn("shrink-0", tone)}>
         <polyline points={coords} fill="none" strokeWidth={1.5} className="stroke-current" />
       </svg>
-      <span className={cn("font-mono text-[10px]", tone)}>
+      <span className={cn(" text-[10px]", tone)}>
         Condition {fmtNum(first, 0)} → {fmtNum(last, 0)} over {points.length} inspections (
         {direction})
       </span>
@@ -112,7 +112,7 @@ function AssetView({ details: d }: { details: AssetDetails }) {
             <Link
               to="/risks/$assetId"
               params={{ assetId: asset.asset_id }}
-              className="rounded-md border border-line px-4 py-2.5 font-mono text-[11px] uppercase text-cream transition hover:bg-ink3"
+              className="rounded-md border border-line px-4 py-2.5  text-[11px] uppercase text-cream transition hover:bg-ink3"
             >
               Risk detail
             </Link>
@@ -223,7 +223,7 @@ function AssetView({ details: d }: { details: AssetDetails }) {
             ))}
           </DataTable>
         ) : (
-          <p className="font-mono text-[11px] text-steel">No inspections on record.</p>
+          <p className=" text-[11px] text-steel">No inspections on record.</p>
         )}
       </Panel>
 
@@ -248,7 +248,7 @@ function AssetView({ details: d }: { details: AssetDetails }) {
               ))}
             </DataTable>
           ) : (
-            <p className="font-mono text-[11px] text-steel">No failures recorded.</p>
+            <p className=" text-[11px] text-steel">No failures recorded.</p>
           )}
         </Panel>
 
@@ -267,7 +267,7 @@ function AssetView({ details: d }: { details: AssetDetails }) {
               ))}
             </DataTable>
           ) : (
-            <p className="font-mono text-[11px] text-steel">No maintenance recorded.</p>
+            <p className=" text-[11px] text-steel">No maintenance recorded.</p>
           )}
         </Panel>
       </div>
@@ -285,7 +285,7 @@ function AssetView({ details: d }: { details: AssetDetails }) {
             ))}
           </DataTable>
         ) : (
-          <p className="font-mono text-[11px] text-steel">No usage recorded.</p>
+          <p className=" text-[11px] text-steel">No usage recorded.</p>
         )}
       </Panel>
     </div>

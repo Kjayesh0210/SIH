@@ -90,7 +90,7 @@ function Plans() {
                   className="transition hover:bg-slate-50"
                 >
                   <td className="px-4 py-4">
-                    <span className="font-mono text-sm font-semibold text-slate-900">
+                    <span className=" text-sm font-semibold text-slate-900">
                       {job.taskId}
                     </span>
                   </td>

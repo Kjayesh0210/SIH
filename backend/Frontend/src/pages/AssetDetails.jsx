@@ -143,7 +143,7 @@ function AssetDetails() {
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
-                <h1 className="font-mono text-3xl font-bold tracking-tight text-slate-950">
+                <h1 className=" text-3xl font-bold tracking-tight text-slate-950">
                   {asset.asset_id}
                 </h1>
 
@@ -162,7 +162,7 @@ function AssetDetails() {
                 Asset ID
               </p>
 
-              <p className="mt-1 font-mono text-sm font-bold text-slate-900">
+              <p className="mt-1  text-sm font-bold text-slate-900">
                 {asset.asset_id}
               </p>
             </div>

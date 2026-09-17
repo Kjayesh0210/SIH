@@ -95,7 +95,7 @@ function AssistantPage() {
                       key={s}
                       type="button"
                       onClick={() => send(s)}
-                      className="rounded-md border border-line px-3 py-1.5 font-mono text-[11px] text-steel transition hover:bg-ink3 hover:text-cream"
+                      className="rounded-md border border-line px-3 py-1.5  text-[11px] text-steel transition hover:bg-ink3 hover:text-cream"
                     >
                       {s}
                     </button>

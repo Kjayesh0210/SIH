@@ -105,7 +105,7 @@ function About() {
             {PRIORITY_FACTORS.map(([label, weight]) => (
               <li key={label} className="flex items-center justify-between gap-3 py-2">
                 <span className="text-sm text-cream">{label}</span>
-                <span className="font-mono text-[11px] text-signal">{weight}</span>
+                <span className=" text-[11px] text-signal">{weight}</span>
               </li>
             ))}
           </ul>
@@ -116,7 +116,7 @@ function About() {
             {RISK_LEVELS.map(([level, range]) => (
               <li key={level} className="flex items-center gap-3">
                 <Tag tone={level === "CRITICAL" ? "danger" : level === "LOW" ? "clear" : "signal"}>{level}</Tag>
-                <span className="font-mono text-[11px] text-steel">{range}</span>
+                <span className=" text-[11px] text-steel">{range}</span>
               </li>
             ))}
           </ul>
@@ -137,7 +137,7 @@ function About() {
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {SOURCES.map(([name, desc]) => (
               <div key={name} className="rounded-md bg-ink3/50 p-3 hairline">
-                <div className="font-mono text-[11px] tracking-widest text-signal">{name}</div>
+                <div className=" text-[11px] tracking-widest text-signal">{name}</div>
                 <p className="mt-1.5 text-xs leading-relaxed text-steel">{desc}</p>
               </div>
             ))}

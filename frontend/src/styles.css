@@ -1,13 +1,8 @@
-@import "tailwindcss" source(none);
+@import "tailwindcss";
 @source "../src";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
-
-/*
- * Railway AI Block Planner — "Chrome Sunset Control" design system.
- * All colours are semantic tokens. Never hardcode colours in components.
- */
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -18,38 +13,46 @@
 
   --font-display: var(--font-display-family);
   --font-body: var(--font-body-family);
-  --font-mono: var(--font-mono-family);
   --font-sans: var(--font-body-family);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Control-room palette */
   --color-ink: var(--ink);
   --color-ink2: var(--ink2);
   --color-ink3: var(--ink3);
   --color-line: var(--line);
+
   --color-signal: var(--signal);
   --color-signalsoft: var(--signalsoft);
   --color-clear: var(--clear);
   --color-danger: var(--danger);
+
   --color-steel: var(--steel);
   --color-cream: var(--cream);
 
@@ -63,66 +66,54 @@
 :root {
   --radius: 0.5rem;
 
-  --font-display-family: "Oswald", sans-serif;
-  --font-body-family: "IBM Plex Sans", sans-serif;
-  --font-mono-family: "IBM Plex Mono", monospace;
+  /* Typography */
+  --font-display-family: "Inter", sans-serif;
+  --font-body-family: "Inter", sans-serif;
 
-  /*
-   * Light theme. The token names are kept from the original dark palette so no
-   * component markup has to change: --ink is the page ground (now white),
-   * --cream is the primary text (now near-black), --steel stays the muted text.
-   * Accent hues are darkened from their dark-theme values so they still clear
-   * contrast requirements against a white ground.
-   */
+  /* Core palette */
   --ink: #ffffff;
-  --ink2: #f7f8fb;
-  --ink3: #eef1f6;
-  --line: #d6dce7;
-  --signal: #a76a00;
-  --signalsoft: #8a5a00;
-  --clear: #0b7a57;
-  --danger: #c0341f;
-  --steel: #5a6478;
-  --cream: #0f1521;
+  --ink2: #f8fafc;
+  --ink3: #f1f5f9;
+  --line: #e2e8f0;
 
-  --background: var(--ink);
-  --foreground: var(--cream);
-  --card: var(--ink2);
-  --card-foreground: var(--cream);
-  --popover: var(--ink2);
-  --popover-foreground: var(--cream);
-  --primary: var(--signal);
-  --primary-foreground: var(--ink);
-  --secondary: var(--ink3);
-  --secondary-foreground: var(--cream);
-  --muted: var(--ink3);
-  --muted-foreground: var(--steel);
-  --accent: var(--ink3);
-  --accent-foreground: var(--cream);
-  --destructive: var(--danger);
-  --destructive-foreground: var(--ink);
-  --border: var(--line);
-  --input: var(--line);
-  --ring: var(--signal);
+  /* Railway signal palette */
+  --signal: #b7791f;
+  --signalsoft: #d69e2e;
+  --clear: #16805c;
+  --danger: #c2412d;
 
-  --gradient-dusk: radial-gradient(
-    120% 90% at 78% 0%,
-    #ffdcb4 0%,
-    #ffe9d6 20%,
-    #f6ecf0 45%,
-    #f2f5fb 72%,
-    #ffffff 100%
-  );
-  --gradient-chrome: linear-gradient(
-    180deg,
-    #ffffff 0%,
-    #dfe6f2 30%,
-    #b3bfd4 52%,
-    #eef2f9 60%,
-    #b3bfd4 80%,
-    #dfe6f2 100%
-  );
-  --gradient-vignette: radial-gradient(60% 100% at 50% 0%, transparent 55%, #ffffff 100%);
+  /* Text */
+  --steel: #64748b;
+  --cream: #111827;
+
+  /* Semantic theme */
+  --background: #ffffff;
+  --foreground: #111827;
+
+  --card: #ffffff;
+  --card-foreground: #111827;
+
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+
+  --primary: #111111;
+  --primary-foreground: #ffffff;
+
+  --secondary: #f1f5f9;
+  --secondary-foreground: #111827;
+
+  --muted: #f8fafc;
+  --muted-foreground: #64748b;
+
+  --accent: #f1f5f9;
+  --accent-foreground: #111827;
+
+  --destructive: #c2412d;
+  --destructive-foreground: #ffffff;
+
+  --border: #e2e8f0;
+  --input: #cbd5e1;
+  --ring: #111111;
 }
 
 @layer base {
@@ -130,68 +121,239 @@
     border-color: var(--color-border);
   }
 
+  html {
+    background: #ffffff;
+  }
+
   body {
-    background-color: var(--color-background);
+    margin: 0;
+    min-width: 320px;
+    background: var(--color-background);
     color: var(--color-foreground);
     font-family: var(--font-body-family);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  ::selection {
+    background: #111111;
+    color: #ffffff;
   }
 }
+
+/* --------------------------------
+   Motion
+-------------------------------- */
 
 @keyframes lamp {
   0%,
   100% {
     opacity: 1;
-    box-shadow: 0 0 14px 2px currentColor;
+    box-shadow: 0 0 10px 1px currentColor;
   }
+
   50% {
     opacity: 0.55;
-    box-shadow: 0 0 5px 0 currentColor;
+    box-shadow: 0 0 4px 0 currentColor;
   }
 }
 
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-@utility dusk {
-  background: var(--gradient-dusk);
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.65;
+  }
 }
 
-@utility vignette {
-  background: var(--gradient-vignette);
-}
-
-@utility chrome {
-  background: var(--gradient-chrome);
-  /* Dark text: the gradient is light metal, and --ink is now the white ground. */
-  color: var(--cream);
-}
-
-@utility hairline {
-  box-shadow: 0 0 0 1px var(--color-line);
-}
+/* --------------------------------
+   Utilities
+-------------------------------- */
 
 @utility lamp {
   animation: lamp 1.8s ease-in-out infinite;
 }
 
 @utility rise {
-  animation: rise 0.6s cubic-bezier(0.32, 0.72, 0, 1) both;
+  animation: rise 0.45s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+@utility hairline {
+  box-shadow: 0 0 0 1px var(--color-line);
 }
 
 @utility label-mono {
-  font-family: var(--font-mono-family);
   font-size: 10px;
   line-height: 1.4;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--color-steel);
+}
+
+@utility action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  background: #111111;
+  color: #ffffff;
+
+  border: 1px solid #111111;
+  border-radius: 0.375rem;
+
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.08);
+
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+
+@media (hover: hover) {
+  .action-button:hover {
+    transform: translateY(-1px);
+    background: #1f1f1f;
+    border-color: #1f1f1f;
+    box-shadow: 0 4px 10px rgba(16, 24, 40, 0.12);
+  }
+}
+
+@utility soft-card {
+  background: #ffffff;
+  border: 1px solid var(--color-line);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+@utility enterprise-card {
+  background: #ffffff;
+  border: 1px solid var(--color-line);
+  border-radius: 0.5rem;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+
+@media (hover: hover) {
+  .enterprise-card:hover {
+    transform: translateY(-1px);
+    border-color: #cbd5e1;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+  }
+}
+
+/* --------------------------------
+   Scrollbars
+-------------------------------- */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* --------------------------------
+   Form controls
+-------------------------------- */
+
+input,
+textarea,
+select {
+  color: #111827;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #94a3b8;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+.font-display {
+  font-family: var(--font-display-family);
+}
+
+/* --------------------------------
+   Tables
+-------------------------------- */
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  font-weight: 500;
+}
+
+/* --------------------------------
+   Links
+-------------------------------- */
+
+a {
+  text-decoration: none;
+}
+
+/* --------------------------------
+   Reduced motion
+-------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

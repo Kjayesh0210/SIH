@@ -89,8 +89,8 @@ function DataPage() {
           <div className="flex items-start gap-3">
             <Lamp tone={backend.isError ? "danger" : backend.isLoading ? "signal" : "clear"} />
             <div className="space-y-1">
-              <div className="font-mono text-[11px] text-cream">NODE BACKEND · {API_BASE_URL}</div>
-              <div className="font-mono text-[10px] text-steel">
+              <div className=" text-[11px] text-cream">NODE BACKEND · {API_BASE_URL}</div>
+              <div className=" text-[10px] text-steel">
                 {backend.isError
                   ? (backend.error?.message ?? "Unreachable")
                   : (backend.data ?? "Checking…")}
@@ -100,10 +100,10 @@ function DataPage() {
           <div className="flex items-start gap-3">
             <Lamp tone={engine.isError ? "danger" : engine.isLoading ? "signal" : "clear"} />
             <div className="space-y-1">
-              <div className="font-mono text-[11px] text-cream">
+              <div className=" text-[11px] text-cream">
                 PYTHON AI ENGINE · {engine.data?.mlApiUrl ?? "via backend"}
               </div>
-              <div className="font-mono text-[10px] text-steel">
+              <div className=" text-[10px] text-steel">
                 {engine.isError
                   ? (engine.error?.message ?? "Offline")
                   : engine.data
@@ -144,7 +144,7 @@ function DataPage() {
                   type="file"
                   accept=".csv,text/csv"
                   onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                  className="w-full rounded-md border border-line bg-ink3/60 px-3 py-1.5 font-mono text-[12px] text-cream file:mr-3 file:rounded file:border-0 file:bg-ink3 file:px-2 file:py-1 file:font-mono file:text-[11px] file:text-cream"
+                  className="w-full rounded-md border border-line bg-ink3/60 px-3 py-1.5  text-[12px] text-cream file:mr-3 file:rounded file:border-0 file:bg-ink3 file:px-2 file:py-1  file:text-[11px] file:text-cream"
                 />
               </Field>
             </div>

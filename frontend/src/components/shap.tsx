@@ -35,7 +35,7 @@ export function ShapFactors({ explanation }: { explanation: RiskExplanation }) {
       </span>
       <span
         className={cn(
-          "text-right font-mono text-[11px] tabular-nums",
+          "text-right  text-[11px] tabular-nums",
           tone === "danger" ? "text-danger" : "text-clear",
         )}
       >
@@ -51,7 +51,7 @@ export function ShapFactors({ explanation }: { explanation: RiskExplanation }) {
         {drivers.length ? (
           <ul className="space-y-2">{drivers.map((f) => row(f, "danger"))}</ul>
         ) : (
-          <p className="font-mono text-[11px] text-steel">No drivers recorded.</p>
+          <p className=" text-[11px] text-steel">No drivers recorded.</p>
         )}
       </div>
       <div>
@@ -59,7 +59,7 @@ export function ShapFactors({ explanation }: { explanation: RiskExplanation }) {
         {protective.length ? (
           <ul className="space-y-2">{protective.map((f) => row(f, "clear"))}</ul>
         ) : (
-          <p className="font-mono text-[11px] text-steel">No protective factors recorded.</p>
+          <p className=" text-[11px] text-steel">No protective factors recorded.</p>
         )}
       </div>
     </div>

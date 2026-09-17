@@ -294,7 +294,7 @@ function KPI() {
                         className="transition hover:bg-slate-50"
                       >
                         <td className="px-5 py-4">
-                          <span className="font-mono text-sm font-bold text-slate-900">
+                          <span className=" text-sm font-bold text-slate-900">
                             {block.blockId}
                           </span>
                         </td>

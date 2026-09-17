@@ -33,7 +33,7 @@ function RiskDetail() {
 
   return (
     <div className="space-y-6">
-      <Link to="/risks" className="font-mono text-[11px] text-steel hover:text-cream">
+      <Link to="/risks" className=" text-[11px] text-steel hover:text-cream">
         ← ALL ASSETS BY RISK
       </Link>
       <PageHeader
@@ -48,7 +48,7 @@ function RiskDetail() {
           <Link
             to="/assets/$assetId"
             params={{ assetId }}
-            className="rounded-md border border-line px-4 py-2.5 font-mono text-[11px] uppercase text-cream transition hover:bg-ink3"
+            className="rounded-md border border-line px-4 py-2.5  text-[11px] uppercase text-cream transition hover:bg-ink3"
           >
             Full asset history
           </Link>
@@ -118,7 +118,7 @@ function RiskDetail() {
                 />
               </div>
             ) : isNotFound(asset.error) ? (
-              <p className="font-mono text-[11px] text-steel">Asset master record not imported.</p>
+              <p className=" text-[11px] text-steel">Asset master record not imported.</p>
             ) : (
               <ErrorNote error={asset.error} />
             )}
