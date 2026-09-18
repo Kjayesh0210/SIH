@@ -739,9 +739,9 @@ function Dashboard() {
   };
 
   return (
-    <div className="min-w-0 space-y-6 sm:space-y-8">
+    <div className="min-w-0 space-y-6 sm:space-y-6">
       {/* Station identity + primary action */}
-      <div className="relative min-w-0 overflow-hidden rounded-2xl border border-line bg-ink2 p-4 hairline sm:p-7">
+      <div className="relative min-w-0 overflow-hidden rounded-2xl border border-line bg-ink2 p-4 hairline sm:p-6">
         {/* Background image: hidden on mobile */}
         <div
           className="absolute inset-y-0 right-0 hidden opacity-80 sm:block sm:w-[55%]"
