@@ -775,8 +775,8 @@ function Dashboard() {
               </button>
 
               <Link to="/requests/new" className="min-w-0">
-                <ChromeButton className="flex w-full items-center justify-center gap-2 px-4 py-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_10px_rgba(15,23,42,0.12)] sm:w-auto">
-                  <Plus className="size-4" />
+                <ChromeButton className="flex flex-row items-center justify-center gap-2 px-4 py-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_10px_rgba(15,23,42,0.12)]">
+                  <Plus className="size-4 shrink-0" />
                   <span>New Request</span>
                 </ChromeButton>
               </Link>
