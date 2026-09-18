@@ -22,6 +22,8 @@ import {
   ChevronDown,
   MapPin,
   Mail,
+  Menu,
+  X,
 } from "lucide-react";
 
 const NAV_GROUPS = [
@@ -104,7 +106,7 @@ function PersonaPicker() {
     <select
       value={persona.id}
       onChange={(e) => setPersona(e.target.value as (typeof PERSONAS)[number]["id"])}
-      className="h-9 min-w-[190px] rounded-md border border-line bg-white px-3 text-[11px] text-cream outline-none transition hover:border-slate-300 focus:border-cream"
+      className="h-9 min-w-[190px] max-w-full rounded-md border border-line bg-white px-3 text-[11px] text-cream outline-none transition hover:border-slate-300 focus:border-cream sm:min-w-[190px]"
       title="Demo persona"
     >
       {PERSONAS.map((p) => (
@@ -134,10 +136,14 @@ export function EngineOfflineBanner() {
 
   return (
     <div className="border-b border-signal/30 bg-amber-50">
-      <div className="flex items-center gap-3 px-6 py-2">
-        <Lamp tone="danger" />
+      <div className="flex items-start gap-3 px-4 py-2 sm:px-6">
+        <div className="mt-0.5 shrink-0">
+          <Lamp tone="danger" />
+        </div>
 
-        <span className="text-[11px] tracking-wide text-signal">{message}</span>
+        <span className="min-w-0 text-[10px] leading-5 tracking-wide text-signal sm:text-[11px]">
+          {message}
+        </span>
       </div>
     </div>
   );
@@ -156,7 +162,7 @@ function StatusLamp({
 }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="text-[11px] uppercase tracking-[0.14em] text-steel">{label}</span>
+      <span className="text-[10px] uppercase tracking-[0.14em] text-steel">{label}</span>
 
       <Lamp tone={isError ? "danger" : isLoading ? "signal" : "clear"} />
 
@@ -175,69 +181,98 @@ function TopUtilityBar({ onStationClick }: { onStationClick: () => void }) {
 
   return (
     <div className="border-b border-line bg-white">
-      <div className="flex h-14 items-center gap-6 px-6">
+      <div className="flex min-h-14 flex-wrap items-center gap-3 px-4 py-3 sm:gap-4 sm:px-6 sm:py-2 lg:h-14 lg:flex-nowrap lg:gap-6">
         <button
           onClick={onStationClick}
-          className="flex items-center gap-2 rounded-md border border-line bg-white px-3 py-2 text-[11px] text-cream transition hover:border-slate-300 hover:bg-slate-50"
+          className="flex min-w-0 shrink-0 items-center gap-2 rounded-md border border-line bg-white px-3 py-2 text-[11px] text-cream transition hover:border-slate-300 hover:bg-slate-50"
           title="Switch station"
         >
-          <MapPin className="size-3.5 text-signal" />
+          <MapPin className="size-3.5 shrink-0 text-signal" />
 
           <span className="font-bold text-signal">{activeStation.code}</span>
 
-          <span className="hidden text-steel md:inline">{activeStation.name}</span>
+          <span className="hidden max-w-[180px] truncate text-steel md:inline">
+            {activeStation.name}
+          </span>
 
-          <ChevronDown className="size-3 text-steel" />
+          <ChevronDown className="size-3 shrink-0 text-steel" />
         </button>
 
-        <div className="h-7 w-px bg-line" />
+        <div className="hidden h-7 w-px bg-line lg:block" />
 
         <button
           onClick={() => setIsInboxOpen(true)}
-          className="flex items-center gap-3 rounded-md px-2 py-1.5 transition hover:bg-slate-50"
+          className="flex min-w-0 items-center gap-3 rounded-md px-2 py-1.5 text-left transition hover:bg-slate-50"
           title={`Logged in as ${userProfile.email}`}
         >
-          <Mail className="size-4 text-steel" />
+          <Mail className="size-4 shrink-0 text-steel" />
 
-          <div className="text-left">
+          <div className="min-w-0">
             <div className="text-[10px] uppercase tracking-[0.14em] text-steel">
               Engineer Mailbox
             </div>
 
-            <div className="mt-0.5 max-w-[190px] truncate text-[11px] text-cream">
+            <div className="mt-0.5 max-w-[170px] truncate text-[11px] text-cream sm:max-w-[190px]">
               {userProfile.email}
             </div>
           </div>
 
           {unreadCount > 0 ? (
-            <span className="flex size-4 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-white">
+            <span className="flex size-4 shrink-0 items-center justify-center rounded-full bg-danger text-[10px] font-bold text-white">
               {unreadCount}
             </span>
           ) : null}
         </button>
 
-        <div className="h-7 w-px bg-line" />
+        <div className="hidden h-7 w-px bg-line lg:block" />
 
-        <div className="flex items-center gap-3">
-          <span className="text-[10px] uppercase tracking-[0.14em] text-steel">
+        <div className="flex min-w-0 items-center gap-3">
+          <span className="hidden text-[10px] uppercase tracking-[0.14em] text-steel xl:inline">
             Operating Persona
           </span>
 
           <PersonaPicker />
         </div>
 
-        <div className="h-7 w-px bg-line" />
+        <div className="hidden h-7 w-px bg-line lg:block" />
 
-        <StatusLamp label="API" isError={backend.isError} isLoading={backend.isLoading} text="UP" />
+        <div className="flex items-center gap-4">
+          <StatusLamp
+            label="API"
+            isError={backend.isError}
+            isLoading={backend.isLoading}
+            text="UP"
+          />
 
-        <StatusLamp
-          label="ML Engine"
-          isError={engine.isError}
-          isLoading={engine.isLoading}
-          text={engine.data?.status ?? "UP"}
-        />
+          <StatusLamp
+            label="ML Engine"
+            isError={engine.isError}
+            isLoading={engine.isLoading}
+            text={engine.data?.status ?? "UP"}
+          />
+        </div>
       </div>
     </div>
+  );
+}
+
+function SidebarLogo() {
+  return (
+    <Link to="/" className="flex items-center gap-3">
+      <span className="grid size-9 place-items-center rounded-md bg-cream font-display text-sm font-bold text-white">
+        S
+      </span>
+
+      <span className="leading-none">
+        <span className="block font-display text-sm font-semibold tracking-wide text-cream">
+          BLOCK-AI
+        </span>
+
+        <span className="mt-1.5 block text-[9px] tracking-[0.16em] text-steel">
+          AI BLOCK PLANNER
+        </span>
+      </span>
+    </Link>
   );
 }
 
@@ -246,21 +281,7 @@ function Sidebar() {
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-[260px] border-r border-line bg-white lg:block">
       <div className="flex h-full flex-col">
         <div className="border-b border-line px-6 py-5">
-          <Link to="/" className="flex items-center gap-3">
-            <span className="grid size-9 place-items-center rounded-md bg-cream font-display text-sm font-bold text-white">
-              S
-            </span>
-
-            <span className="leading-none">
-              <span className="block font-display text-sm font-semibold tracking-wide text-cream">
-                BLOCK-AI
-              </span>
-
-              <span className="mt-1.5 block text-[9px] tracking-[0.16em] text-steel">
-                AI BLOCK PLANNER
-              </span>
-            </span>
-          </Link>
+          <SidebarLogo />
         </div>
 
         <SidebarNavigation />
@@ -269,7 +290,7 @@ function Sidebar() {
   );
 }
 
-function SidebarNavigation() {
+function SidebarNavigation({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <nav className="flex-1 overflow-y-auto px-3 py-5">
       <div className="space-y-6">
@@ -287,13 +308,14 @@ function SidebarNavigation() {
                   <Link
                     key={item.to}
                     to={item.to}
+                    onClick={onNavigate}
                     className="flex items-center gap-3 rounded-md px-3 py-2.5 text-[11px] text-steel transition hover:bg-slate-50 hover:text-cream"
                     activeProps={{
                       className:
                         "flex items-center gap-3 rounded-md px-3 py-2.5 text-[11px] bg-slate-100 text-cream",
                     }}
                   >
-                    <Icon className="size-4" />
+                    <Icon className="size-4 shrink-0" />
 
                     <span>{item.label}</span>
                   </Link>
@@ -307,18 +329,86 @@ function SidebarNavigation() {
   );
 }
 
+function MobileNavigation({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 lg:hidden">
+      <button
+        type="button"
+        aria-label="Close navigation"
+        className="absolute inset-0 bg-slate-950/30 backdrop-blur-[1px]"
+        onClick={onClose}
+      />
+
+      <aside className="absolute inset-y-0 left-0 flex w-[min(82vw,320px)] flex-col border-r border-line bg-white shadow-2xl">
+        <div className="flex h-16 shrink-0 items-center justify-between border-b border-line px-5">
+          <SidebarLogo />
+
+          <button
+            type="button"
+            onClick={onClose}
+            className="grid size-9 place-items-center rounded-md border border-line text-steel hover:bg-slate-50"
+            aria-label="Close menu"
+          >
+            <X className="size-4" />
+          </button>
+        </div>
+
+        <SidebarNavigation onNavigate={onClose} />
+      </aside>
+    </div>
+  );
+}
+
 export function SiteShell({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
+
   const [isStationModalOpen, setIsStationModalOpen] = useState(false);
+
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isMapPage = pathname === "/map";
 
   return (
-    <div className="min-h-screen bg-white text-cream">
+    <div className="min-h-screen overflow-x-hidden bg-white text-cream">
       <Sidebar />
 
+      <MobileNavigation isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
+
       <div className="lg:pl-[260px]">
-        <header className="sticky top-0 z-20 bg-white">
+        <header className="sticky top-0 z-40 bg-white">
+          <div className="flex h-14 items-center justify-between border-b border-line bg-white px-4 lg:hidden">
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="grid size-9 place-items-center rounded-md border border-line bg-white text-cream hover:bg-slate-50"
+              aria-label="Open navigation"
+            >
+              <Menu className="size-4" />
+            </button>
+
+            <Link to="/" className="flex items-center gap-2">
+              <span className="grid size-8 place-items-center rounded-md bg-cream font-display text-xs font-bold text-white">
+                S
+              </span>
+
+              <span className="font-display text-sm font-semibold tracking-wide text-cream">
+                BLOCK-AI
+              </span>
+            </Link>
+
+            <button
+              type="button"
+              onClick={() => setIsStationModalOpen(true)}
+              className="flex size-9 items-center justify-center rounded-md border border-line bg-white text-signal hover:bg-slate-50"
+              title="Switch station"
+              aria-label="Switch station"
+            >
+              <MapPin className="size-4" />
+            </button>
+          </div>
+
           <TopUtilityBar onStationClick={() => setIsStationModalOpen(true)} />
         </header>
 
@@ -331,7 +421,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
         <EngineOfflineBanner />
 
-        <main className="mx-auto max-w-[1440px] px-6 py-6">{children}</main>
+        <main className="mx-auto w-full max-w-[1440px] px-4 py-4 sm:px-6 sm:py-6">{children}</main>
 
         {/* {!isMapPage ? (
           <footer className="border-t border-line/70">

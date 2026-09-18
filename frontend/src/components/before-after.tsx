@@ -7,7 +7,9 @@ export function BeforeAfterTable({ data }: { data: Record<string, unknown> | und
     (entry): entry is [string, Record<string, unknown>] =>
       !!entry[1] && typeof entry[1] === "object",
   );
+
   if (!rows.length) return null;
+
   return (
     <DataTable head={["Metric", "Before AI", "After AI", "Change"]}>
       {rows.map(([metric, v]) => {
@@ -17,12 +19,20 @@ export function BeforeAfterTable({ data }: { data: Record<string, unknown> | und
             k === "improvement" || k === "note" ? display(val) : `${humanize(k)}: ${display(val)}`,
           )
           .join(" · ");
+
         return (
           <tr key={metric}>
-            <td className="capitalize">{humanize(metric)}</td>
-            <td className="text-steel">{display(v["before"])}</td>
-            <td className="text-signal">{display(v["after"])}</td>
-            <td className="text-clear">{change || "—"}</td>
+            <td className="min-w-[9rem] max-w-[14rem] whitespace-normal break-words capitalize">
+              {humanize(metric)}
+            </td>
+
+            <td className="whitespace-nowrap text-steel">{display(v["before"])}</td>
+
+            <td className="whitespace-nowrap text-signal">{display(v["after"])}</td>
+
+            <td className="min-w-[10rem] max-w-[18rem] whitespace-normal break-words text-clear">
+              {change || "—"}
+            </td>
           </tr>
         );
       })}

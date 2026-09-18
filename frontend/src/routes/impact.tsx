@@ -9,7 +9,9 @@ import { fmtNum } from "@/lib/format";
 export const Route = createFileRoute("/impact")({
   head: () => ({
     meta: [
-      { title: "Impact — Before vs After AI Block Planning" },
+      {
+        title: "Impact — Before vs After AI Block Planning",
+      },
       {
         name: "description",
         content:
@@ -21,7 +23,13 @@ export const Route = createFileRoute("/impact")({
 });
 
 const COMPARISONS = [
-  { label: "Blocks", before: "blocksBefore", after: "blocksAfter", unit: "", lowerIsBetter: true },
+  {
+    label: "Blocks",
+    before: "blocksBefore",
+    after: "blocksAfter",
+    unit: "",
+    lowerIsBetter: true,
+  },
   {
     label: "Block hours",
     before: "durationHoursBefore",
@@ -59,39 +67,58 @@ function Comparison({
   lowerIsBetter: boolean;
 }) {
   const max = Math.max(before ?? 0, after ?? 0, 1);
+
   const better =
     before !== undefined &&
     after !== undefined &&
     (lowerIsBetter ? after < before : after > before);
+
   const change = before ? Math.round((((after ?? 0) - before) / before) * 1000) / 10 : null;
+
   return (
-    <div className="rounded-lg bg-ink2/80 p-4 hairline">
-      <div className="flex items-baseline justify-between gap-2">
-        <span className="label-mono tracking-widest">{label}</span>
+    <div className="min-w-0 rounded-lg bg-ink2/80 p-3.5 hairline sm:p-4">
+      <div className="flex min-w-0 flex-col gap-1.5 sm:flex-row sm:items-baseline sm:justify-between">
+        <span className="label-mono min-w-0 break-words tracking-widest">{label}</span>
+
         {change !== null ? (
-          <span className={cn(" text-[11px]", better ? "text-clear" : "text-danger")}>
+          <span className={cn("shrink-0 text-[11px]", better ? "text-clear" : "text-danger")}>
             {change > 0 ? "+" : ""}
             {change}%
           </span>
         ) : null}
       </div>
-      <div className="mt-3 space-y-2">
+
+      <div className="mt-3 space-y-2.5">
         {[
-          { name: "Before", value: before, bar: "bg-steel/60", text: "text-steel" },
-          { name: "After AI", value: after, bar: "bg-signal", text: "text-signal" },
+          {
+            name: "Before",
+            value: before,
+            bar: "bg-steel/60",
+            text: "text-steel",
+          },
+          {
+            name: "After AI",
+            value: after,
+            bar: "bg-signal",
+            text: "text-signal",
+          },
         ].map((row) => (
           <div
             key={row.name}
-            className="grid grid-cols-[4.5rem_minmax(0,1fr)_4rem] items-center gap-2"
+            className="grid min-w-0 grid-cols-[4.5rem_minmax(0,1fr)_auto] items-center gap-2"
           >
-            <span className=" text-[10px] uppercase text-steel">{row.name}</span>
-            <span className="h-2 overflow-hidden rounded-full bg-ink3">
+            <span className="whitespace-nowrap text-[10px] uppercase text-steel">{row.name}</span>
+
+            <span className="h-2 min-w-0 overflow-hidden rounded-full bg-ink3">
               <span
                 className={cn("block h-full rounded-full", row.bar)}
-                style={{ width: `${((row.value ?? 0) / max) * 100}%` }}
+                style={{
+                  width: `${Math.min(100, ((row.value ?? 0) / max) * 100)}%`,
+                }}
               />
             </span>
-            <span className={cn("text-right  text-[12px] tabular-nums", row.text)}>
+
+            <span className={cn("whitespace-nowrap text-right text-[12px] tabular-nums", row.text)}>
               {row.value ?? "—"}
               {unit}
             </span>
@@ -112,28 +139,31 @@ function RealPlanKpis() {
     >
       <AsyncBlock isLoading={isLoading} error={error} data={data} loadingLabel="Computing…">
         {(k) => (
-          <div className="space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="min-w-0 space-y-4">
+            <div className="grid min-w-0 gap-3 sm:grid-cols-2 lg:grid-cols-4">
               <Meta
                 label="Blocks"
                 value={`${fmtNum(k.blocksBefore, 0)} → ${fmtNum(k.blocksAfter, 0)}`}
                 tone="signal"
               />
+
               <Meta
                 label="Block hours"
                 value={`${fmtNum(k.hoursBefore, 1)} → ${fmtNum(k.hoursAfter, 1)}`}
                 tone="clear"
               />
+
               <Meta label="Hours saved" value={`${fmtNum(k.hoursSaved, 1)} h`} tone="clear" />
-              <Meta
-                label="Departments consolidated"
-                value={fmtNum(k.departmentsConsolidated, 0)}
-              />
+
+              <Meta label="Departments consolidated" value={fmtNum(k.departmentsConsolidated, 0)} />
             </div>
-            <div className="flex flex-wrap gap-1.5">
+
+            <div className="flex min-w-0 flex-wrap gap-1.5">
               <Tag tone="clear">{k.realWindowBlocks} block(s) on real conflict-free windows</Tag>
+
               <Tag tone="steel">{k.estimatedWindowBlocks} block(s) on estimated windows</Tag>
             </div>
+
             <Disclaimer text={k.assumption} />
           </div>
         )}
@@ -146,13 +176,15 @@ function Impact() {
   const { data, isLoading, error } = useQuery(kpisQuery);
 
   return (
-    <div className="space-y-5">
+    <div className="min-w-0 space-y-4 sm:space-y-5">
       <PageHeader
         eyebrow="EVALUATION · IMPACT"
         title="Before vs after AI planning"
         intro="Decentralized planning has each department request its own possession. The AI planner merges them into shared shadow blocks outside timetable peaks."
       />
+
       <RealPlanKpis />
+
       <AsyncBlock
         isLoading={isLoading}
         error={error}
@@ -162,25 +194,30 @@ function Impact() {
         {(kpis) => {
           const k = kpis.kpis ?? {};
           const s = kpis.evaluation_summary;
+
           return (
-            <div className="space-y-6">
+            <div className="min-w-0 space-y-4 sm:space-y-6">
               {s ? (
                 <Panel title={s.title ?? "Evaluation"}>
-                  <div className="grid gap-4 sm:grid-cols-3">
+                  <div className="grid min-w-0 gap-3 sm:grid-cols-3">
                     <Meta label="Corridor" value={s.corridor ?? "—"} />
+
                     <Meta label="Period" value={s.evaluation_period ?? "—"} />
+
                     <Meta
                       label="Downtime saved"
                       value={`${k["downtimeHoursSaved"] ?? "—"} h`}
                       tone="clear"
                     />
                   </div>
-                  <div className="mt-3">
+
+                  <div className="mt-3 min-w-0">
                     <Disclaimer text={s.prototype_disclaimer} />
                   </div>
                 </Panel>
               ) : null}
-              <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+
+              <div className="grid min-w-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
                 {COMPARISONS.map((c) => (
                   <Comparison
                     key={c.label}
@@ -192,8 +229,11 @@ function Impact() {
                   />
                 ))}
               </div>
+
               <Panel title="Detailed comparison">
-                <BeforeAfterTable data={kpis.before_vs_after} />
+                <div className="min-w-0 overflow-x-auto [-webkit-overflow-scrolling:touch]">
+                  <BeforeAfterTable data={kpis.before_vs_after} />
+                </div>
               </Panel>
             </div>
           );

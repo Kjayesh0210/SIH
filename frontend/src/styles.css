@@ -120,21 +120,32 @@
   * {
     border-color: var(--color-border);
     font-family: var(--font-body-family);
+    box-sizing: border-box;
   }
 
   html {
     background: #e8f1f8;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
     margin: 0;
     min-width: 320px;
+    max-width: 100%;
+    overflow-x: hidden;
     background: var(--color-background);
     color: var(--color-foreground);
     font-size: 17px;
     font-family: var(--font-body-family);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  #root {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
   }
 
   button,
@@ -295,6 +306,34 @@
 }
 
 /* --------------------------------
+   Responsive Utilities
+-------------------------------- */
+
+@utility mobile-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+@utility mobile-full {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+@utility mobile-break {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+@utility touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* --------------------------------
    Scrollbars
 -------------------------------- */
 
@@ -329,6 +368,7 @@ input,
 textarea,
 select {
   color: #111827;
+  max-width: 100%;
 }
 
 input::placeholder,
@@ -352,10 +392,16 @@ select:focus {
 
 table {
   border-collapse: collapse;
+  max-width: 100%;
 }
 
 th {
   font-weight: 500;
+}
+
+td,
+th {
+  overflow-wrap: break-word;
 }
 
 /* --------------------------------
@@ -364,6 +410,108 @@ th {
 
 a {
   text-decoration: none;
+}
+
+/* --------------------------------
+   Mobile Responsive
+-------------------------------- */
+
+@media (max-width: 1023px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    font-size: 15px;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    max-width: 100%;
+  }
+
+  input,
+  textarea,
+  select {
+    min-height: 40px;
+  }
+
+  table {
+    min-width: 520px;
+  }
+
+  th,
+  td {
+    white-space: nowrap;
+  }
+
+  .mobile-scroll table {
+    min-width: 520px;
+  }
+
+  .mobile-scroll {
+    margin-left: -1px;
+    margin-right: -1px;
+  }
+}
+
+@media (max-width: 639px) {
+  body {
+    font-size: 14px;
+  }
+
+  .label-mono {
+    font-size: 9px;
+  }
+
+  .action-button {
+    min-height: 42px;
+    padding-left: 0.875rem;
+    padding-right: 0.875rem;
+  }
+}
+
+@media (max-width: 479px) {
+  body {
+    min-width: 320px;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  button {
+    min-height: 40px;
+  }
+}
+
+/* --------------------------------
+   Safe Mobile Overflow
+-------------------------------- */
+
+@media (max-width: 767px) {
+  img,
+  svg,
+  video,
+  canvas {
+    max-width: 100%;
+  }
+
+  pre,
+  code {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  pre {
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 /* --------------------------------

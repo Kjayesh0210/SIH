@@ -25,7 +25,12 @@ export const Route = createFileRoute("/data")({
   component: DataPage,
 });
 
-type CsvResult = { dataset: string; file: string; inserted: number; failed: number };
+type CsvResult = {
+  dataset: string;
+  file: string;
+  inserted: number;
+  failed: number;
+};
 
 function DataPage() {
   const qc = useQueryClient();
@@ -37,14 +42,15 @@ function DataPage() {
   const [history, setHistory] = useState<CsvResult[]>([]);
   const fileInput = useRef<HTMLInputElement>(null);
 
-  // Imports change what almost every page shows, so refresh everything.
   const refreshAll = () => void qc.invalidateQueries();
 
   const csv = useMutation({
     mutationFn: async ({ dataset, file }: { dataset: string; file: File }) => {
       const form = new FormData();
       form.append("file", file);
+
       const res = await apiUpload<never>(`/import/${encodeURIComponent(dataset)}`, form);
+
       return {
         dataset: res.dataset ?? dataset,
         file: file.name,
@@ -52,17 +58,23 @@ function DataPage() {
         failed: res.failed ?? 0,
       };
     },
+
     onSuccess: (r) => {
       setHistory((h) => [r, ...h]);
       toast.success(`${r.dataset}: ${r.inserted} inserted, ${r.failed} failed`);
       setFile(null);
-      if (fileInput.current) fileInput.current.value = "";
+
+      if (fileInput.current) {
+        fileInput.current.value = "";
+      }
+
       refreshAll();
     },
   });
 
   const mlImport = useMutation({
     mutationFn: async () => (await apiPost<MlImportResult>("/ml/import")).data,
+
     onSuccess: () => {
       toast.success("ML outputs imported");
       refreshAll();
@@ -73,11 +85,14 @@ function DataPage() {
 
   const onUpload = (e: FormEvent) => {
     e.preventDefault();
-    if (file) csv.mutate({ dataset, file });
+
+    if (file) {
+      csv.mutate({ dataset, file });
+    }
   };
 
   return (
-    <div className="space-y-5">
+    <div className="min-w-0 space-y-4 sm:space-y-5">
       <PageHeader
         eyebrow="ADMIN · DATA & SYSTEM"
         title="Data pipeline"
@@ -85,25 +100,30 @@ function DataPage() {
       />
 
       <Panel title="System status">
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="flex items-start gap-3">
+        <div className="grid min-w-0 gap-5 md:grid-cols-2 md:gap-6">
+          <div className="flex min-w-0 items-start gap-3">
             <Lamp tone={backend.isError ? "danger" : backend.isLoading ? "signal" : "clear"} />
-            <div className="space-y-1">
-              <div className=" text-[11px] text-cream">NODE BACKEND · {API_BASE_URL}</div>
-              <div className=" text-[10px] text-steel">
+
+            <div className="min-w-0 space-y-1">
+              <div className="break-all text-[11px] text-cream">NODE BACKEND · {API_BASE_URL}</div>
+
+              <div className="break-words text-[10px] text-steel">
                 {backend.isError
                   ? (backend.error?.message ?? "Unreachable")
                   : (backend.data ?? "Checking…")}
               </div>
             </div>
           </div>
-          <div className="flex items-start gap-3">
+
+          <div className="flex min-w-0 items-start gap-3">
             <Lamp tone={engine.isError ? "danger" : engine.isLoading ? "signal" : "clear"} />
-            <div className="space-y-1">
-              <div className=" text-[11px] text-cream">
+
+            <div className="min-w-0 space-y-1">
+              <div className="break-all text-[11px] text-cream">
                 PYTHON AI ENGINE · {engine.data?.mlApiUrl ?? "via backend"}
               </div>
-              <div className=" text-[10px] text-steel">
+
+              <div className="break-words text-[10px] text-steel">
                 {engine.isError
                   ? (engine.error?.message ?? "Offline")
                   : engine.data
@@ -113,22 +133,28 @@ function DataPage() {
             </div>
           </div>
         </div>
+
         <div className="mt-4">
           <GhostButton
             onClick={() => {
-              void qc.invalidateQueries({ queryKey: ["backend-health"] });
-              void qc.invalidateQueries({ queryKey: ["ai-health"] });
+              void qc.invalidateQueries({
+                queryKey: ["backend-health"],
+              });
+              void qc.invalidateQueries({
+                queryKey: ["ai-health"],
+              });
             }}
+            className="w-full sm:w-auto"
           >
             Re-check
           </GhostButton>
         </div>
       </Panel>
 
-      <div className="grid gap-4 xl:grid-cols-12">
-        <Panel title="1 · Import CSV datasets" className="xl:col-span-7">
-          <form onSubmit={onUpload} className="space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid min-w-0 gap-4 xl:grid-cols-12">
+        <Panel title="1 · Import CSV datasets" className="min-w-0 xl:col-span-7">
+          <form onSubmit={onUpload} className="min-w-0 space-y-4">
+            <div className="grid min-w-0 gap-4 sm:grid-cols-2">
               <Field label="Dataset">
                 <SelectInput value={dataset} onChange={(e) => setDataset(e.target.value)}>
                   {IMPORT_DATASETS.map((d) => (
@@ -138,28 +164,36 @@ function DataPage() {
                   ))}
                 </SelectInput>
               </Field>
+
               <Field label="CSV file" hint="Rows with duplicate IDs are counted as failed">
                 <input
                   ref={fileInput}
                   type="file"
                   accept=".csv,text/csv"
                   onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                  className="w-full rounded-md border border-line bg-ink3/60 px-3 py-1.5  text-[12px] text-cream file:mr-3 file:rounded file:border-0 file:bg-ink3 file:px-2 file:py-1  file:text-[11px] file:text-cream"
+                  className="w-full min-w-0 rounded-md border border-line bg-ink3/60 px-3 py-2 text-[12px] text-cream file:mr-2 file:rounded file:border-0 file:bg-ink3 file:px-2 file:py-1 file:text-[11px] file:text-cream sm:py-1.5 sm:file:mr-3"
                 />
               </Field>
             </div>
+
             {csv.error ? <ErrorNote error={csv.error} title="Import failed" /> : null}
-            <ChromeButton type="submit" disabled={!file || csv.isPending}>
+
+            <ChromeButton
+              type="submit"
+              disabled={!file || csv.isPending}
+              className="w-full sm:w-auto"
+            >
               {csv.isPending ? "Importing…" : "Upload & import"}
             </ChromeButton>
           </form>
+
           {history.length ? (
-            <div className="mt-5">
+            <div className="mt-5 min-w-0 overflow-x-auto">
               <DataTable head={["Dataset", "File", "Inserted", "Failed"]}>
                 {history.map((h, i) => (
                   <tr key={i}>
                     <td>{h.dataset}</td>
-                    <td className="text-steel">{h.file}</td>
+                    <td className="max-w-[12rem] truncate text-steel">{h.file}</td>
                     <td className="text-clear">{fmtNum(h.inserted, 0)}</td>
                     <td className={h.failed ? "text-danger" : "text-steel"}>
                       {fmtNum(h.failed, 0)}
@@ -171,21 +205,23 @@ function DataPage() {
           ) : null}
         </Panel>
 
-        <div className="space-y-6 xl:col-span-5">
-          <Panel title="2 · Import ML outputs">
+        <div className="min-w-0 space-y-4 xl:col-span-5 xl:space-y-6">
+          <Panel title="2 · Import ML outputs" className="min-w-0">
             <p className="text-sm leading-relaxed text-steel">
               Upserts <span className="text-cream">asset_risk_scores</span>,{" "}
               <span className="text-cream">ensemble_predictions</span> and{" "}
               <span className="text-cream">asset_explanations</span> from ML/outputs into MongoDB.
               Safe to re-run.
             </p>
+
             {mlImport.error ? (
               <div className="mt-3">
                 <ErrorNote error={mlImport.error} title="ML import failed" />
               </div>
             ) : null}
+
             {mlImport.data ? (
-              <div className="mt-4">
+              <div className="mt-4 min-w-0 overflow-x-auto">
                 <DataTable head={["Output", "Processed", "Inserted", "Updated"]}>
                   {(
                     [
@@ -204,8 +240,9 @@ function DataPage() {
                 </DataTable>
               </div>
             ) : null}
+
             <ChromeButton
-              className="mt-4"
+              className="mt-4 w-full sm:w-auto"
               onClick={() => mlImport.mutate()}
               disabled={mlImport.isPending}
             >
@@ -213,24 +250,27 @@ function DataPage() {
             </ChromeButton>
           </Panel>
 
-          <Panel title="3 · Generate tasks">
+          <Panel title="3 · Generate tasks" className="min-w-0">
             <p className="text-sm leading-relaxed text-steel">
               Creates pending tasks from inspections marked{" "}
               <span className="text-cream">Attention Required</span> and from maintenance schedules
               past their due date. Existing tasks are left untouched.
             </p>
+
             {generate.error ? (
               <div className="mt-3">
                 <ErrorNote error={generate.error} title="Task generation failed" />
               </div>
             ) : null}
+
             {generate.data ? (
-              <div className="mt-4 grid grid-cols-2 gap-3">
+              <div className="mt-4 grid min-w-0 grid-cols-1 gap-3 sm:grid-cols-2">
                 <Meta
                   label="Defect tasks"
                   value={`${generate.data.defects?.created ?? 0} new · ${generate.data.defects?.matched ?? 0} existing`}
                   tone="signal"
                 />
+
                 <Meta
                   label="Overdue maintenance"
                   value={`${generate.data.overdueMaintenance?.created ?? 0} new · ${generate.data.overdueMaintenance?.matched ?? 0} existing`}
@@ -238,8 +278,9 @@ function DataPage() {
                 />
               </div>
             ) : null}
+
             <ChromeButton
-              className="mt-4"
+              className="mt-4 w-full sm:w-auto"
               onClick={() => generate.mutate()}
               disabled={generate.isPending}
             >

@@ -114,7 +114,7 @@ function StationLens() {
       title="Database Asset Station Lens"
       right={<span className=" text-[10px] text-steel">DATABASE ASSETS SNAPSHOT</span>}
     >
-      <div className="relative max-w-sm">
+      <div className="relative w-full max-w-sm">
         <TextInput
           placeholder="Search a station (code or name)…"
           value={selected ? `${selected.name} (${selected.code})` : query}
@@ -150,7 +150,7 @@ function StationLens() {
       </div>
 
       {selected ? (
-        <div className="mt-4">
+        <div className="mt-3 sm:mt-4">
           <AsyncBlock
             isLoading={summary.isLoading}
             error={summary.error}
@@ -159,7 +159,7 @@ function StationLens() {
           >
             {(s) => (
               <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
+                <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-5">
                   <Stat label="Assets" value={fmtNum(s.assetCount, 0)} />
                   <Stat
                     label="Critical"
@@ -304,8 +304,8 @@ function buildDemoWeeklySchedule(startDate: string): { date: string; items: Work
       title: "OHE insulator replacement",
       department: "TRD",
       priority: "CRITICAL",
-      startTime: "00:40",
-      endTime: "03:10",
+      startTime: "06:40",
+      endTime: "09:10",
       durationHours: 2.5,
     },
     {
@@ -314,9 +314,19 @@ function buildDemoWeeklySchedule(startDate: string): { date: string; items: Work
       title: "Point machine testing",
       department: "S&T",
       priority: "MEDIUM",
-      startTime: "02:10",
-      endTime: "04:40",
+      startTime: "10:30",
+      endTime: "13:00",
       durationHours: 2.5,
+    },
+    {
+      day: 2,
+      ref: "TMS-LNL-051",
+      title: "Ballast tamping · Up line",
+      department: "Engineering",
+      priority: "HIGH",
+      startTime: "15:20",
+      endTime: "18:20",
+      durationHours: 3,
     },
     {
       day: 3,
@@ -324,8 +334,8 @@ function buildDemoWeeklySchedule(startDate: string): { date: string; items: Work
       title: "Ballast tamping · Up line",
       department: "Engineering",
       priority: "HIGH",
-      startTime: "23:10",
-      endTime: "02:10",
+      startTime: "14:20",
+      endTime: "17:20",
       durationHours: 3,
     },
     {
@@ -334,9 +344,19 @@ function buildDemoWeeklySchedule(startDate: string): { date: string; items: Work
       title: "Traction bonding audit",
       department: "TRD",
       priority: "MEDIUM",
-      startTime: "01:00",
-      endTime: "02:45",
+      startTime: "18:00",
+      endTime: "19:45",
       durationHours: 1.75,
+    },
+    {
+      day: 4,
+      ref: "TMS-LNL-042",
+      title: "Rail weld inspection",
+      department: "Engineering",
+      priority: "HIGH",
+      startTime: "01:20",
+      endTime: "04:20",
+      durationHours: 3,
     },
     {
       day: 5,
@@ -344,9 +364,19 @@ function buildDemoWeeklySchedule(startDate: string): { date: string; items: Work
       title: "Signal cable health check",
       department: "S&T",
       priority: "LOW",
-      startTime: "03:00",
-      endTime: "05:00",
+      startTime: "20:30",
+      endTime: "22:30",
       durationHours: 2,
+    },
+    {
+      day: 5,
+      ref: "SNT-LNL-207",
+      title: "Point machine testing",
+      department: "S&T",
+      priority: "MEDIUM",
+      startTime: "10:30",
+      endTime: "13:00",
+      durationHours: 2.5,
     },
     {
       day: 6,
@@ -354,9 +384,9 @@ function buildDemoWeeklySchedule(startDate: string): { date: string; items: Work
       title: "Track geometry recording",
       department: "Engineering",
       priority: "MEDIUM",
-      startTime: "00:30",
-      endTime: "03:30",
-      durationHours: 3,
+      startTime: "18:00",
+      endTime: "22:00",
+      durationHours: 2,
     },
   ];
 
@@ -537,9 +567,7 @@ function TaskCard({
               </div>
             ))}
             {item.sessions.length > 10 ? (
-              <p className=" text-[10px] text-steel">
-                + {item.sessions.length - 10} more blocks.
-              </p>
+              <p className=" text-[10px] text-steel">+ {item.sessions.length - 10} more blocks.</p>
             ) : null}
           </div>
         </div>
@@ -626,7 +654,7 @@ function SlotPicker({
               onClick={() => onPick(slot.slotId)}
               className="rounded-md border border-line bg-ink3/50 p-3 text-left transition hover:border-signal/60 hover:bg-ink3"
             >
-              <div className="font-display text-sm font-semibold text-cream">
+              <div className="min-w-0 truncate font-display text-sm font-semibold text-cream">
                 {dayLabel(slot.date)} · {ampm(slot.startTime)} – {ampm(slot.endTime)}
               </div>
               <div className="mt-1  text-[10px] text-steel">{slot.note}</div>
@@ -711,10 +739,10 @@ function Dashboard() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="min-w-0 space-y-6 sm:space-y-8">
       {/* Station identity + primary action */}
-      <div className="rounded-2xl border border-line bg-gradient-to-r from-ink2 via-ink2 to-ink3/40 p-5 hairline sm:p-7">
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+      <div className="min-w-0 rounded-2xl border border-line bg-gradient-to-r from-ink2 via-ink2 to-ink3/40 p-4 hairline sm:p-7">
+        <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start lg:gap-6">
           <div className="min-w-0 space-y-4">
             <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-steel">
               <span className="flex items-center gap-1 font-bold text-signal">
@@ -728,7 +756,7 @@ function Dashboard() {
                 STATION CODE: {activeStation.code}
               </span>
             </div>
-            <h1 className="max-w-4xl font-display text-2xl font-bold uppercase leading-tight tracking-tight text-cream sm:text-3xl">
+            <h1 className="max-w-4xl break-words font-display text-xl font-bold uppercase leading-tight tracking-tight text-cream sm:text-3xl">
               {activeStation.name} Station Dashboard
             </h1>
             <div className="flex items-center gap-2 text-xs text-steel">
@@ -736,18 +764,18 @@ function Dashboard() {
               <span className="font-semibold text-cream">{activeStation.sectionId}</span>
             </div>
 
-            <div className="flex flex-wrap gap-3 pt-1">
+            <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:flex-wrap sm:gap-3">
               <button
                 type="button"
                 onClick={() => setIsInboxOpen(true)}
-                className="flex items-center justify-center gap-2 rounded-lg border border-signal/40 bg-signal/15 px-4 py-3 text-xs font-semibold text-signal transition hover:bg-signal/25"
+                className="flex w-full items-center justify-center gap-2 rounded-lg border border-signal/40 bg-signal/15 px-4 py-3 text-xs font-semibold text-signal transition hover:bg-signal/25 sm:w-auto"
               >
                 <Mail className="size-4" />
                 <span>Official Mailbox</span>
               </button>
 
               <Link to="/requests/new" className="min-w-0">
-                <ChromeButton className="flex items-center justify-center gap-2 px-4 py-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_10px_rgba(15,23,42,0.12)]">
+                <ChromeButton className="flex w-full items-center justify-center gap-2 px-4 py-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_10px_rgba(15,23,42,0.12)] sm:w-auto">
                   <Plus className="size-4" />
                   <span>New Request</span>
                 </ChromeButton>
@@ -759,11 +787,8 @@ function Dashboard() {
             <div className="rounded-lg border border-line/80 bg-ink/70 px-4 py-3 text-xs">
               <div className="text-[10px] font-semibold uppercase text-steel">Section Engineer</div>
               <div className="font-semibold text-cream">{userProfile.name}</div>
-              <div className="truncate text-[11px] text-signal">
-                {userProfile.email}
-              </div>
+              <div className="truncate text-[11px] text-signal">{userProfile.email}</div>
             </div>
-
           </div>
         </div>
       </div>
@@ -772,20 +797,22 @@ function Dashboard() {
       <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_280px]">
         <Panel
           title="Weekly maintenance schedule"
-          right={<Link to="/schedule" className="hover:underline">VIEW FULL SCHEDULE →</Link>}
+          right={
+            <Link to="/schedule" className="hover:underline">
+              VIEW FULL SCHEDULE →
+            </Link>
+          }
         >
           <div className="overflow-x-auto rounded-lg border border-line/70 bg-ink2">
             <div className="min-w-[760px]">
               <div className="grid grid-cols-[112px_minmax(0,1fr)] border-b border-line/70 bg-ink3/60 px-3 py-2 text-[10px] uppercase tracking-wide text-steel">
                 <span>Date</span>
                 <div className="grid grid-cols-7">
-                  {["00:00", "04:00", "08:00", "12:00", "16:00", "20:00", "24:00"].map(
-                    (hour) => (
-                      <span key={hour} className="text-center last:text-right">
-                        {hour}
-                      </span>
-                    ),
-                  )}
+                  {["00:00", "04:00", "08:00", "12:00", "16:00", "20:00", "24:00"].map((hour) => (
+                    <span key={hour} className="text-center last:text-right">
+                      {hour}
+                    </span>
+                  ))}
                 </div>
               </div>
 
@@ -801,7 +828,9 @@ function Dashboard() {
                         isToday ? "bg-signal/5" : ""
                       }`}
                     >
-                      <div className={`border-r border-line/60 px-3 py-3 ${isToday ? "bg-signal/10" : "bg-ink3/30"}`}>
+                      <div
+                        className={`border-r border-line/60 px-3 py-3 ${isToday ? "bg-signal/10" : "bg-ink3/30"}`}
+                      >
                         <div className="text-[10px] font-semibold uppercase tracking-wide text-steel">
                           {weekdayName(date).slice(0, 3)}
                         </div>
@@ -821,12 +850,16 @@ function Dashboard() {
                       >
                         {items.length ? (
                           items.map((item, index) => {
-                            const style = timeWindowStyle(item.window?.startTime, item.window?.endTime);
+                            const style = timeWindowStyle(
+                              item.window?.startTime,
+                              item.window?.endTime,
+                            );
                             const className =
                               "absolute flex min-w-0 items-center overflow-hidden rounded border border-signal/50 bg-signal/20 px-2 text-[10px] font-semibold text-cream transition hover:bg-signal/30";
                             const content = (
                               <span className="truncate">
-                                {ampm(item.window?.startTime)} – {ampm(item.window?.endTime)} · {item.title}
+                                {ampm(item.window?.startTime)} – {ampm(item.window?.endTime)} ·{" "}
+                                {item.title}
                               </span>
                             );
 
@@ -865,7 +898,7 @@ function Dashboard() {
           </div>
         </Panel>
 
-        <div className="grid gap-3">
+        <div className="grid min-w-0 gap-3">
           <Stat
             label="Station Defects"
             value={String(openItems.length)}
@@ -873,7 +906,12 @@ function Dashboard() {
             tone={overdueCount > 0 ? "signal" : undefined}
           />
           <Link to="/risks">
-            <Stat label="Critical assets" value={count(critical)} tone="danger" sub="≥ 60% failure probability" />
+            <Stat
+              label="Critical assets"
+              value={count(critical)}
+              tone="danger"
+              sub="≥ 60% failure probability"
+            />
           </Link>
           <Link to="/risks">
             <Stat label="High-risk assets" value={count(high)} tone="signal" sub="40 – 59%" />
@@ -899,13 +937,13 @@ function Dashboard() {
           >
             <div className="space-y-5">
               <div className="flex flex-wrap items-end justify-between gap-3 border-b border-line/70 pb-4">
-                <p className="max-w-3xl text-xs leading-relaxed text-steel">
-                Work logged for <strong className="text-cream">{activeStation.name}</strong> that is
-                still open, including block requests filed through the AI engine. Items stay here
-                until you mark them completed. The AI checks timetables, live delays and other
-                departments' work internally when it allots a window.
+                <p className="min-w-0 max-w-3xl text-xs leading-relaxed text-steel">
+                  Work logged for <strong className="text-cream">{activeStation.name}</strong> that
+                  is still open, including block requests filed through the AI engine. Items stay
+                  here until you mark them completed. The AI checks timetables, live delays and
+                  other departments' work internally when it allots a window.
                 </p>
-                <div className="shrink-0 rounded-md bg-ink3 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-steel">
+                <div className="w-fit shrink-0 rounded-md bg-ink3 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-wide text-steel">
                   Sorted by urgency
                 </div>
               </div>
@@ -924,7 +962,7 @@ function Dashboard() {
                   </p>
                 </div>
               ) : (
-                <div className="max-h-[640px] space-y-3 overflow-y-auto pr-2">
+                <div className="max-h-[640px] min-w-0 space-y-3 overflow-y-auto pr-1 sm:pr-2">
                   {openItems.map((item) => (
                     <div key={item.key}>
                       <TaskCard
@@ -983,7 +1021,7 @@ function Dashboard() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-1.5">
                         <Train className="size-3.5 text-steel" />
-                        <span className="font-display text-sm font-semibold text-cream">
+                        <span className="min-w-0 truncate font-display text-sm font-semibold text-cream">
                           {trn.name}
                         </span>
                       </div>
@@ -1000,7 +1038,7 @@ function Dashboard() {
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between  text-[11px] text-steel">
+                    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-[11px] text-steel">
                       <span>
                         #{trn.number} ({trn.type})
                       </span>
@@ -1042,7 +1080,7 @@ function Dashboard() {
               <div className="border-t border-line pt-5">
                 <div className="label-mono mb-3 tracking-widest">Impact this cycle</div>
                 {k ? (
-                  <div className="grid grid-cols-2 gap-2.5">
+                  <div className="grid grid-cols-1 gap-2.5 min-[380px]:grid-cols-2">
                     <Meta
                       label="Blocks"
                       value={`${k["blocksBefore"] ?? "—"} → ${k["blocksAfter"] ?? "—"}`}

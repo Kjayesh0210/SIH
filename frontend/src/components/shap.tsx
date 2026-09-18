@@ -6,10 +6,15 @@ type Factor = { label: string; value: number | null };
 
 function collect(explanation: RiskExplanation, prefix: string, count: number): Factor[] {
   const out: Factor[] = [];
+
   for (let i = 1; i <= count; i++) {
     const parsed = parseShapReason(explanation[`${prefix}${i}`]);
-    if (parsed) out.push(parsed);
+
+    if (parsed) {
+      out.push(parsed);
+    }
   }
+
   return out;
 }
 
@@ -17,25 +22,30 @@ function collect(explanation: RiskExplanation, prefix: string, count: number): F
 export function ShapFactors({ explanation }: { explanation: RiskExplanation }) {
   const drivers = collect(explanation, "top_reason_", 5);
   const protective = collect(explanation, "protective_factor_", 3);
+
   const max = Math.max(0.0001, ...[...drivers, ...protective].map((f) => Math.abs(f.value ?? 0)));
 
   const row = (f: Factor, tone: "danger" | "clear") => (
     <li
       key={`${tone}-${f.label}`}
-      className="grid grid-cols-[minmax(0,1fr)_7rem_4.5rem] items-center gap-3"
+      className="grid min-w-0 grid-cols-[minmax(0,1fr)_5rem_4rem] items-center gap-2 sm:grid-cols-[minmax(0,1fr)_7rem_4.5rem] sm:gap-3"
     >
-      <span className="truncate text-sm capitalize text-cream" title={f.label}>
+      <span className="min-w-0 truncate text-xs capitalize text-cream sm:text-sm" title={f.label}>
         {f.label}
       </span>
-      <span className="h-1.5 overflow-hidden rounded-full bg-ink3">
+
+      <span className="h-1.5 min-w-0 overflow-hidden rounded-full bg-ink3">
         <span
           className={cn("block h-full rounded-full", tone === "danger" ? "bg-danger" : "bg-clear")}
-          style={{ width: `${(Math.abs(f.value ?? 0) / max) * 100}%` }}
+          style={{
+            width: `${(Math.abs(f.value ?? 0) / max) * 100}%`,
+          }}
         />
       </span>
+
       <span
         className={cn(
-          "text-right  text-[11px] tabular-nums",
+          "text-right text-[10px] tabular-nums sm:text-[11px]",
           tone === "danger" ? "text-danger" : "text-clear",
         )}
       >
@@ -46,20 +56,23 @@ export function ShapFactors({ explanation }: { explanation: RiskExplanation }) {
 
   return (
     <div className="space-y-5">
-      <div>
+      <div className="min-w-0">
         <div className="label-mono mb-2 tracking-widest">Pushing risk up</div>
+
         {drivers.length ? (
           <ul className="space-y-2">{drivers.map((f) => row(f, "danger"))}</ul>
         ) : (
-          <p className=" text-[11px] text-steel">No drivers recorded.</p>
+          <p className="text-[11px] text-steel">No drivers recorded.</p>
         )}
       </div>
-      <div>
+
+      <div className="min-w-0">
         <div className="label-mono mb-2 tracking-widest">Protective factors</div>
+
         {protective.length ? (
           <ul className="space-y-2">{protective.map((f) => row(f, "clear"))}</ul>
         ) : (
-          <p className=" text-[11px] text-steel">No protective factors recorded.</p>
+          <p className="text-[11px] text-steel">No protective factors recorded.</p>
         )}
       </div>
     </div>

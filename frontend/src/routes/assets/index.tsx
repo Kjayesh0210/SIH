@@ -17,7 +17,9 @@ import {
 import { fmtDate, fmtNum } from "@/lib/format";
 
 export const Route = createFileRoute("/assets/")({
-  head: () => ({ meta: [{ title: "Assets — Railway AI Block Planner" }] }),
+  head: () => ({
+    meta: [{ title: "Assets — Railway AI Block Planner" }],
+  }),
   component: Assets,
 });
 
@@ -26,11 +28,17 @@ const PAGE_SIZE = 50;
 function Assets() {
   // GET /assets is unpaginated — ~14 MB for 41k assets — so it loads only on request.
   const [loadRegister, setLoadRegister] = useState(false);
-  const { data, isLoading, error } = useQuery({ ...assetsQuery, enabled: loadRegister });
+
+  const { data, isLoading, error } = useQuery({
+    ...assetsQuery,
+    enabled: loadRegister,
+  });
+
   const [jumpId, setJumpId] = useState("");
   const [search, setSearch] = useState("");
   const [type, setType] = useState("");
   const [page, setPage] = useState(1);
+
   const navigate = useNavigate();
 
   const types = useMemo(
@@ -40,6 +48,7 @@ function Assets() {
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
+
     return (data ?? []).filter(
       (a) =>
         (!type || a.asset_type === type) &&
@@ -51,17 +60,28 @@ function Assets() {
   }, [data, search, type]);
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+
   const current = Math.min(page, totalPages);
+
   const rows = filtered.slice((current - 1) * PAGE_SIZE, current * PAGE_SIZE);
 
   const onJump = (e: FormEvent) => {
     e.preventDefault();
+
     const id = jumpId.trim();
-    if (id) void navigate({ to: "/assets/$assetId", params: { assetId: id } });
+
+    if (id) {
+      void navigate({
+        to: "/assets/$assetId",
+        params: {
+          assetId: id,
+        },
+      });
+    }
   };
 
   return (
-    <div className="space-y-6">
+    <div className="min-w-0 space-y-4 sm:space-y-6">
       <PageHeader
         eyebrow="ASSET REGISTER"
         title="Railway assets"
@@ -69,8 +89,11 @@ function Assets() {
       />
 
       <Panel title="Open an asset">
-        <form onSubmit={onJump} className="flex flex-wrap items-end gap-3">
-          <div className="min-w-56 flex-1">
+        <form
+          onSubmit={onJump}
+          className="flex min-w-0 flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-end"
+        >
+          <div className="min-w-0 flex-1 sm:min-w-56">
             <Field
               label="Asset ID"
               hint="Jumps straight to the asset — no need to load the register"
@@ -82,12 +105,14 @@ function Assets() {
               />
             </Field>
           </div>
-          <ChromeButton type="submit" disabled={!jumpId.trim()}>
+
+          <ChromeButton type="submit" disabled={!jumpId.trim()} className="w-full sm:w-auto">
             Open asset
           </ChromeButton>
+
           <Link
             to="/risks"
-            className="rounded-md border border-line px-4 py-2.5  text-[11px] uppercase text-cream transition hover:bg-ink3"
+            className="flex min-h-10 w-full items-center justify-center rounded-md border border-line px-4 py-2.5 text-[11px] uppercase text-cream transition hover:bg-ink3 sm:w-auto"
           >
             Browse by risk
           </Link>
@@ -101,6 +126,7 @@ function Assets() {
             <span className="text-cream">14 MB</span> for a full division, which takes a few
             seconds. Load it only if you want to browse and filter the whole list.
           </p>
+
           <div className="mt-4">
             <GhostButton onClick={() => setLoadRegister(true)}>Load full register</GhostButton>
           </div>
@@ -111,11 +137,13 @@ function Assets() {
             title="Filters"
             right={
               data
-                ? `${filtered.length.toLocaleString("en-IN")} OF ${data.length.toLocaleString("en-IN")}`
+                ? `${filtered.length.toLocaleString("en-IN")} OF ${data.length.toLocaleString(
+                    "en-IN",
+                  )}`
                 : undefined
             }
           >
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid min-w-0 gap-4 sm:grid-cols-2">
               <Field label="Search">
                 <TextInput
                   value={search}
@@ -126,6 +154,7 @@ function Assets() {
                   placeholder="Asset ID, station code or name"
                 />
               </Field>
+
               <Field label="Asset type">
                 <SelectInput
                   value={type}
@@ -135,6 +164,7 @@ function Assets() {
                   }}
                 >
                   <option value="">All types</option>
+
                   {types.map((t) => (
                     <option key={t} value={t}>
                       {t}
@@ -158,51 +188,67 @@ function Assets() {
               {() =>
                 rows.length ? (
                   <>
-                    <DataTable
-                      head={[
-                        "Asset",
-                        "Type",
-                        "Station",
-                        "Installed",
-                        "Age (y)",
-                        "Expected life (y)",
-                        "Initial condition",
-                      ]}
-                    >
-                      {rows.map((a) => (
-                        <tr key={a.asset_id}>
-                          <td>
-                            <Link
-                              to="/assets/$assetId"
-                              params={{ assetId: a.asset_id }}
-                              className="text-signal hover:underline"
-                            >
-                              {a.asset_id}
-                            </Link>
-                          </td>
-                          <td>{a.asset_type ?? "—"}</td>
-                          <td>
-                            {a.station_code ?? "—"}
-                            {a.station_name ? (
-                              <span className="text-steel"> · {a.station_name}</span>
-                            ) : null}
-                          </td>
-                          <td className="text-steel">{fmtDate(a.installation_date)}</td>
-                          <td>{fmtNum(a.asset_age_years)}</td>
-                          <td>{fmtNum(a.expected_life_years)}</td>
-                          <td>{fmtNum(a.initial_condition_score)}</td>
-                        </tr>
-                      ))}
-                    </DataTable>
-                    <Pager
-                      page={current}
-                      totalPages={totalPages}
-                      total={filtered.length}
-                      onPage={setPage}
-                    />
+                    <div className="w-full max-w-full overflow-x-auto rounded-md border border-line/60 [-webkit-overflow-scrolling:touch]">
+                      <div className="min-w-[850px]">
+                        <DataTable
+                          head={[
+                            "Asset",
+                            "Type",
+                            "Station",
+                            "Installed",
+                            "Age (y)",
+                            "Expected life (y)",
+                            "Initial condition",
+                          ]}
+                        >
+                          {rows.map((a) => (
+                            <tr key={a.asset_id}>
+                              <td>
+                                <Link
+                                  to="/assets/$assetId"
+                                  params={{
+                                    assetId: a.asset_id,
+                                  }}
+                                  className="text-signal hover:underline"
+                                >
+                                  {a.asset_id}
+                                </Link>
+                              </td>
+
+                              <td>{a.asset_type ?? "—"}</td>
+
+                              <td>
+                                <span className="whitespace-nowrap">{a.station_code ?? "—"}</span>
+
+                                {a.station_name ? (
+                                  <span className="text-steel"> · {a.station_name}</span>
+                                ) : null}
+                              </td>
+
+                              <td className="text-steel">{fmtDate(a.installation_date)}</td>
+
+                              <td>{fmtNum(a.asset_age_years)}</td>
+
+                              <td>{fmtNum(a.expected_life_years)}</td>
+
+                              <td>{fmtNum(a.initial_condition_score)}</td>
+                            </tr>
+                          ))}
+                        </DataTable>
+                      </div>
+                    </div>
+
+                    <div className="mt-4">
+                      <Pager
+                        page={current}
+                        totalPages={totalPages}
+                        total={filtered.length}
+                        onPage={setPage}
+                      />
+                    </div>
                   </>
                 ) : (
-                  <p className=" text-[11px] text-steel">No assets match these filters.</p>
+                  <p className="text-[11px] text-steel">No assets match these filters.</p>
                 )
               }
             </AsyncBlock>

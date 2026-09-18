@@ -21,7 +21,8 @@ export const Route = createFileRoute("/assistant")({
       { title: "AI Assistant — Railway AI Block Planner" },
       {
         name: "description",
-        content: "Ask about asset risk, station status, or the current maintenance plan — grounded in real data.",
+        content:
+          "Ask about asset risk, station status, or the current maintenance plan — grounded in real data.",
       },
     ],
   }),
@@ -45,6 +46,7 @@ function AssistantPage() {
     if (!text.trim() || chat.isPending) return;
 
     const next: AssistantMessage[] = [...messages, { role: "user", content: text }];
+
     setMessages(next);
     setInput("");
 
@@ -63,7 +65,7 @@ function AssistantPage() {
   };
 
   return (
-    <div className="space-y-5">
+    <div className="min-w-0 space-y-4 sm:space-y-5">
       <PageHeader
         eyebrow="AI · ASSISTANT"
         title="Ask about risk, history or the plan"
@@ -72,30 +74,32 @@ function AssistantPage() {
 
       {status.data && !status.data.configured ? (
         <Panel title="Not configured">
-          <p className="text-sm text-steel">
+          <p className="break-words text-sm leading-6 text-steel">
             The assistant needs an API key. Set <code className="text-signal">AI_API_KEY</code> (and
             optionally <code className="text-signal">AI_BASE_URL</code> /{" "}
-            <code className="text-signal">AI_MODEL</code>) in <code className="text-signal">Backend/.env</code>{" "}
-            — see <code className="text-signal">.env.example</code>. Any OpenAI-compatible provider works
+            <code className="text-signal">AI_MODEL</code>) in{" "}
+            <code className="text-signal">Backend/.env</code> — see{" "}
+            <code className="text-signal">.env.example</code>. Any OpenAI-compatible provider works
             (Grok, Groq, OpenAI).
           </p>
         </Panel>
       ) : (
         <Panel title="Conversation">
-          <div className="min-h-[16rem] space-y-4">
+          <div className="min-h-[16rem] min-w-0 space-y-4">
             {messages.length === 0 ? (
               <div className="space-y-3">
                 <EmptyState
                   title="No messages yet"
                   hint="Try one of these, or ask your own question."
                 />
-                <div className="flex flex-wrap gap-2">
+
+                <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
                   {SUGGESTIONS.map((s) => (
                     <button
                       key={s}
                       type="button"
                       onClick={() => send(s)}
-                      className="rounded-md border border-line px-3 py-1.5  text-[11px] text-steel transition hover:bg-ink3 hover:text-cream"
+                      className="w-full rounded-md border border-line px-3 py-2 text-left text-[11px] leading-5 text-steel transition hover:bg-ink3 hover:text-cream sm:w-auto sm:py-1.5"
                     >
                       {s}
                     </button>
@@ -103,21 +107,30 @@ function AssistantPage() {
                 </div>
               </div>
             ) : (
-              messages.map((m, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <Tag tone={m.role === "user" ? "steel" : "signal"}>
-                    {m.role === "user" ? "You" : "AI"}
-                  </Tag>
-                  <p className="flex-1 whitespace-pre-wrap text-sm text-cream">{m.content}</p>
-                </div>
-              ))
+              <div className="space-y-4">
+                {messages.map((m, i) => (
+                  <div key={i} className="flex min-w-0 items-start gap-2 sm:gap-3">
+                    <div className="shrink-0">
+                      <Tag tone={m.role === "user" ? "steel" : "signal"}>
+                        {m.role === "user" ? "You" : "AI"}
+                      </Tag>
+                    </div>
+
+                    <p className="min-w-0 flex-1 break-words whitespace-pre-wrap text-sm leading-6 text-cream">
+                      {m.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
             )}
+
             {chat.isPending ? <Loading label="Looking up real data and thinking…" /> : null}
+
             {chat.error ? <ErrorNote error={chat.error} title="Assistant failed" /> : null}
           </div>
 
-          <form onSubmit={onSubmit} className="mt-4 flex gap-3">
-            <div className="flex-1">
+          <form onSubmit={onSubmit} className="mt-4 flex flex-col gap-2 sm:flex-row sm:gap-3">
+            <div className="min-w-0 flex-1">
               <TextInput
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -125,7 +138,12 @@ function AssistantPage() {
                 disabled={chat.isPending}
               />
             </div>
-            <ChromeButton type="submit" disabled={chat.isPending || !input.trim()}>
+
+            <ChromeButton
+              type="submit"
+              disabled={chat.isPending || !input.trim()}
+              className="w-full sm:w-auto"
+            >
               Send
             </ChromeButton>
           </form>
