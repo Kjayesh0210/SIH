@@ -741,54 +741,76 @@ function Dashboard() {
   return (
     <div className="min-w-0 space-y-6 sm:space-y-8">
       {/* Station identity + primary action */}
-      <div className="min-w-0 rounded-2xl border border-line bg-gradient-to-r from-ink2 via-ink2 to-ink3/40 p-4 hairline sm:p-7">
-        <div className="grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start lg:gap-6">
-          <div className="min-w-0 space-y-4">
-            <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-steel">
-              <span className="flex items-center gap-1 font-bold text-signal">
-                <MapPin className="size-3.5" />
-                {activeStation.zone}
-              </span>
-              <span>·</span>
-              <span>{activeStation.division}</span>
-              <span>·</span>
-              <span className="rounded bg-signal/20 px-2 py-0.5  text-xs font-bold text-signal">
-                STATION CODE: {activeStation.code}
-              </span>
-            </div>
-            <h1 className="max-w-4xl break-words font-display text-xl font-bold uppercase leading-tight tracking-tight text-cream sm:text-3xl">
-              {activeStation.name} Station Dashboard
-            </h1>
-            <div className="flex items-center gap-2 text-xs text-steel">
+      <div className="relative min-w-0 overflow-hidden rounded-2xl border border-line bg-ink2 p-4 hairline sm:p-7">
+        {/* Background image: hidden on mobile */}
+        <div
+          className="absolute inset-y-0 right-0 hidden opacity-80 sm:block sm:w-[55%]"
+          style={{
+            backgroundImage: "url('/second.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            maskImage: "linear-gradient(to right, transparent, black 35%)",
+            WebkitMaskImage: "linear-gradient(to right, transparent, black 35%)",
+          }}
+        />
+
+        {/* Gradient overlay: hidden on mobile */}
+        <div className="absolute inset-0 hidden bg-gradient-to-r from-ink2 via-ink2/90 to-transparent sm:block" />
+
+        <div className="relative min-w-0 space-y-4">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-steel">
+            <span className="flex items-center gap-1 font-bold text-black">
+              <MapPin className="size-3.5" />
+              {activeStation.zone}
+            </span>
+
+            <span>·</span>
+
+            <span>{activeStation.division}</span>
+
+            <span>·</span>
+
+            <span className="rounded bg-signal/20 px-2 py-0.5 text-xs font-bold text-signal">
+              STATION CODE: {activeStation.code}
+            </span>
+            <span>·</span>
+            <span className="flex items-center gap-2 text-xs text-steel">
               <span className="text-[10px] font-semibold uppercase tracking-wide">Section</span>
               <span className="font-semibold text-cream">{activeStation.sectionId}</span>
-            </div>
+            </span>
+          </div>
 
-            <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:flex-wrap sm:gap-3">
-              <button
-                type="button"
-                onClick={() => setIsInboxOpen(true)}
-                className="flex w-full items-center justify-center gap-2 rounded-lg border border-signal/40 bg-signal/15 px-4 py-3 text-xs font-semibold text-signal transition hover:bg-signal/25 sm:w-auto"
-              >
-                <Mail className="size-4" />
-                <span>Official Mailbox</span>
-              </button>
+          <h1 className="max-w-4xl break-words font-display text-xl font-bold uppercase leading-tight tracking-tight text-cream sm:text-3xl">
+            {activeStation.name} Station Dashboard
+          </h1>
 
-              <Link to="/requests/new" className="min-w-0">
-                <ChromeButton className="flex flex-row items-center justify-center gap-2 px-4 py-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_10px_rgba(15,23,42,0.12)]">
-                  <Plus className="size-4 shrink-0" />
-                  <span>New Request</span>
-                </ChromeButton>
-              </Link>
+          {/* Section + Section Engineer on the same row */}
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-6 sm:gap-y-3">
+            <div className="min-w-0 max-w-full rounded-lg border border-line/80 bg-ink/75 px-4 py-3 text-xs backdrop-blur-sm sm:w-[300px]">
+              <div className="text-[10px] font-semibold uppercase text-steel">Section Engineer</div>
+
+              <div className="font-semibold text-cream">{userProfile.name}</div>
+
+              <div className="truncate text-[11px] text-black/80">{userProfile.email}</div>
             </div>
           </div>
 
-          <div className="flex min-w-0 flex-col gap-3 lg:w-[360px]">
-            <div className="rounded-lg border border-line/80 bg-ink/70 px-4 py-3 text-xs">
-              <div className="text-[10px] font-semibold uppercase text-steel">Section Engineer</div>
-              <div className="font-semibold text-cream">{userProfile.name}</div>
-              <div className="truncate text-[11px] text-signal">{userProfile.email}</div>
-            </div>
+          <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:flex-wrap sm:gap-3">
+            <button
+              type="button"
+              onClick={() => setIsInboxOpen(true)}
+              className="flex w-full items-center justify-center gap-2 rounded-lg border border-black/20 bg-white/15 px-4 py-3 text-xs font-semibold text-black transition hover:bg-black/80 hover:text-white sm:w-auto"
+            >
+              <Mail className="size-4" />
+              <span>Official Mailbox</span>
+            </button>
+
+            <Link to="/requests/new" className="min-w-0">
+              <ChromeButton className="!flex !flex-row !items-center !justify-center gap-2 whitespace-nowrap px-4 py-3 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_4px_10px_rgba(15,23,42,0.12)] text-black/70 hover:text-black">
+                <Plus className="size-4 shrink-0" />
+                <span>New Request</span>
+              </ChromeButton>
+            </Link>
           </div>
         </div>
       </div>

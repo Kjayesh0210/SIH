@@ -22,7 +22,7 @@ export type Persona = {
 export const PERSONAS: Persona[] = [
   {
     id: "station_master",
-    label: "Station Master — Ataria (AA)",
+    label: "Station Master",
     stationCode: "AA",
     stationName: "ATARIA",
   },

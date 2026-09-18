@@ -280,8 +280,10 @@ function Sidebar() {
   return (
     <aside className="fixed inset-y-0 left-0 z-30 hidden w-[260px] border-r border-line bg-white lg:block">
       <div className="flex h-full flex-col">
-        <div className="border-b border-line px-6 py-5">
-          <SidebarLogo />
+        <div className="border-b border-line">
+          <div className="flex h-14 items-center px-6">
+            <SidebarLogo />
+          </div>
         </div>
 
         <SidebarNavigation />
@@ -296,7 +298,7 @@ function SidebarNavigation({ onNavigate }: { onNavigate?: () => void }) {
       <div className="space-y-6">
         {NAV_GROUPS.map((group) => (
           <div key={group.label}>
-            <div className="px-3 pb-2 text-[9px] font-medium uppercase tracking-[0.18em] text-slate-400">
+            <div className="px-3 pb-2 text-[10px] font-medium uppercase tracking-[0.18em] text-slate-400">
               {group.label}
             </div>
 
@@ -309,7 +311,7 @@ function SidebarNavigation({ onNavigate }: { onNavigate?: () => void }) {
                     key={item.to}
                     to={item.to}
                     onClick={onNavigate}
-                    className="flex items-center gap-3 rounded-md px-3 py-2.5 text-[11px] text-steel transition hover:bg-slate-50 hover:text-cream"
+                    className="flex items-center gap-3 rounded-md px-3 py-2.5 text-[14px] text-black/70 transition hover:bg-slate-100 hover:text-black"
                     activeProps={{
                       className:
                         "flex items-center gap-3 rounded-md px-3 py-2.5 text-[11px] bg-slate-100 text-cream",

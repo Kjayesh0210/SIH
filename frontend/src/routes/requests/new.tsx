@@ -790,6 +790,13 @@ function NewRequest() {
 
         <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:flex-wrap">
           <ChromeButton
+            onClick={() => void onConfirm()}
+            disabled={saving}
+            className="w-full sm:w-auto"
+          >
+            {saving ? "Filing…" : "Submit request"}
+          </ChromeButton>
+          <ChromeButton
             onClick={() => setStep("preview")}
             disabled={!chosen}
             className="w-full sm:w-auto"
