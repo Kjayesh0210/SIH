@@ -85,11 +85,11 @@ const NAV_GROUPS = [
         label: "Assistant",
         icon: Bot,
       },
-      {
-        to: "/data",
-        label: "Data",
-        icon: Database,
-      },
+      // {
+      //   to: "/data",
+      //   label: "Data",
+      //   icon: Database,
+      // },
       {
         to: "/about",
         label: "About",
