@@ -259,13 +259,11 @@ function TopUtilityBar({ onStationClick }: { onStationClick: () => void }) {
 function SidebarLogo() {
   return (
     <Link to="/" className="flex items-center gap-3">
-      <span className="grid size-9 place-items-center rounded-md bg-cream font-display text-sm font-bold text-white">
-        S
-      </span>
+      <img src="/logo.png" alt="SAMPARK" className="size-9 object-contain" />
 
       <span className="leading-none">
         <span className="block font-display text-sm font-semibold tracking-wide text-cream">
-          BLOCK-AI
+          SAMPARK
         </span>
 
         <span className="mt-1.5 block text-[9px] tracking-[0.16em] text-steel">
@@ -396,7 +394,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
               </span>
 
               <span className="font-display text-sm font-semibold tracking-wide text-cream">
-                BLOCK-AI
+                SAMPARK
               </span>
             </Link>
 

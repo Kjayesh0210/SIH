@@ -19,7 +19,9 @@ const impactRoutes = require("./routes/impact.routes");
 const stationRoutes = require("./routes/station.routes");
 const assistantRoutes = require("./routes/assistant.routes");
 const { warmUp: warmUpImpactEngine } = require("./services/impact.service");
-const { warmUp: warmUpStationDirectory } = require("./services/stationDirectory.service");
+const {
+  warmUp: warmUpStationDirectory,
+} = require("./services/stationDirectory.service");
 
 const app = express();
 
@@ -63,12 +65,19 @@ app.use(errorHandler);
 // unlucky enough to send the first /api/impact request.
 warmUpImpactEngine()
   .then(() => console.log("Impact engine warmed up"))
-  .catch((error) => console.error("Impact engine warmup failed:", error.message));
+  .catch((error) =>
+    console.error("Impact engine warmup failed:", error.message),
+  );
 
 warmUpStationDirectory()
   .then(() => console.log("Station directory warmed up"))
-  .catch((error) => console.error("Station directory warmup failed:", error.message));
+  .catch((error) =>
+    console.error("Station directory warmup failed:", error.message),
+  );
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+server.keepAliveTimeout = 120000;
+server.headersTimeout = 125000;

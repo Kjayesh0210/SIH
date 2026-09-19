@@ -74,7 +74,10 @@ def load_colocation_tasks():
 
 
 class RailwayAIRequestHandler(BaseHTTPRequestHandler):
-
+    
+    def do_HEAD(self):
+        self._set_headers(200)
+        
     def _set_headers(self, status_code=200):
         self.send_response(status_code)
         self.send_header("Content-Type", "application/json")
