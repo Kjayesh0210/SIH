@@ -1,5 +1,3 @@
-// 127.0.0.1, not localhost: Node resolves localhost to ::1 first, and the
-// Python server only listens on IPv4.
 const DEFAULT_ML_API_URL = "http://127.0.0.1:8000";
 const DEFAULT_ML_TIMEOUT_MS = 15000;
 
@@ -17,7 +15,9 @@ const createError = (status, message, details) => {
   return error;
 };
 
-const callML = async (endpoint, options = {}) => {
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const callML = async (endpoint, options = {}, retries = 0) => {
   const mlApiUrl = getMlApiUrl();
   const timeoutMs = Number(process.env.ML_TIMEOUT_MS) || DEFAULT_ML_TIMEOUT_MS;
 
@@ -29,7 +29,11 @@ const callML = async (endpoint, options = {}) => {
       signal: AbortSignal.timeout(timeoutMs),
     });
   } catch (error) {
-    // Connection refused, DNS failure or timeout: the Python server is not reachable.
+    if (retries > 0) {
+      await sleep(6000);
+      return callML(endpoint, options, retries - 1);
+    }
+
     throw createError(
       503,
       `ML service unavailable at ${mlApiUrl}`,
@@ -40,6 +44,11 @@ const callML = async (endpoint, options = {}) => {
   const body = await response.json().catch(() => null);
 
   if (!response.ok) {
+    if (response.status === 429 && retries > 0) {
+      await sleep(6000);
+      return callML(endpoint, options, retries - 1);
+    }
+
     throw createError(502, `ML service returned ${response.status}`, body);
   }
 
@@ -49,7 +58,9 @@ const callML = async (endpoint, options = {}) => {
 const postML = (endpoint, payload = {}) =>
   callML(endpoint, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(payload),
   });
 
@@ -60,14 +71,13 @@ const simulateWhatIf = (payload) => postML("/api/ai/what-if", payload);
 
 const generatePlan = (payload) => postML("/api/ai/generate-plan", payload);
 
-// Plans one officer's block request — returns the window options the form shows.
 const planRequest = (payload) => postML("/api/ai/plan-request", payload);
 
 const scorePriority = (payload) => postML("/api/ai/priority", payload);
 
-const getKpis = () => callML("/api/ai/kpis");
+const getKpis = () => callML("/api/ai/kpis", {}, 5);
 
-const checkMlHealth = () => callML("/api/health");
+const checkMlHealth = () => callML("/api/health", {}, 10);
 
 module.exports = {
   getMlApiUrl,
