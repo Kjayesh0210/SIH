@@ -1,5 +1,5 @@
 const DEFAULT_ML_API_URL = "http://127.0.0.1:8000";
-const DEFAULT_ML_TIMEOUT_MS = 15000;
+const DEFAULT_ML_TIMEOUT_MS = 20000;
 
 const getMlApiUrl = () =>
   process.env.ML_SERVICE_URL || process.env.ML_API_URL || DEFAULT_ML_API_URL;
@@ -30,7 +30,7 @@ const callML = async (endpoint, options = {}, retries = 0) => {
     });
   } catch (error) {
     if (retries > 0) {
-      await sleep(6000);
+      await sleep(10000);
       return callML(endpoint, options, retries - 1);
     }
 
@@ -45,7 +45,7 @@ const callML = async (endpoint, options = {}, retries = 0) => {
 
   if (!response.ok) {
     if (response.status === 429 && retries > 0) {
-      await sleep(6000);
+      await sleep(10000);
       return callML(endpoint, options, retries - 1);
     }
 

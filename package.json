@@ -3,6 +3,7 @@
   "private": true,
   "description": "Root launcher for the three services — see README.md for setup.",
   "scripts": {
+    "start": "node scripts/start-production.js",
     "install:all": "cd backend/Backend && npm install && cd ../../frontend && bun install",
     "seed:network": "cd backend/Backend && npm run seed:network",
     "dev:ml": "node scripts/run-ml.js",

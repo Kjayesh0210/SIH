@@ -65,7 +65,7 @@ export function errorMessages(err: unknown): string[] {
   return ["Something went wrong."];
 }
 
-const TIMEOUT_MS = 20_000;
+const TIMEOUT_MS = 180_000;
 /** CSV imports insert in batches of 1000 rows, so they get far more time. */
 const UPLOAD_TIMEOUT_MS = 10 * 60_000;
 
